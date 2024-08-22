@@ -52,10 +52,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
 ]
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # Adjust this to your React app's URL
+    'http://localhost:8000',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -137,3 +139,10 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://127.0.0.1:8000'
+    'http://localhost:3000',  # React app running on this port
+    'http://localhost:8000',  # Django app running on this port
+]
