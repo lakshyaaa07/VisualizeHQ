@@ -1,15 +1,17 @@
-// frontend/src/App.js
+import './App.css';
+import {useState,useEffect} from 'react';
 
-import React from 'react';
-import FileUpload from './components/FileUpload';
+
+
 
 function App() {
-    return (
-        <div className="App">
-            <h1>CSV Data Cleaning Tool</h1>
-            <FileUpload />
-        </div>
-    );
+
+  return (
+    <div className="App">
+
+  <h1>App Components</h1>
+    </div>
+  );
 }
 
 export default App;
