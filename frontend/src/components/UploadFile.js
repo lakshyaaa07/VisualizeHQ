@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './UploadFile.css';
 
 function UploadFile() {
     const [filename, setFilename] = useState('');
@@ -70,56 +71,86 @@ function UploadFile() {
         console.log(files);
     }, []);
 
+    const toggleTheme = () => {
+        document.body.classList.toggle('dark-mode');
+        const themeIcon = document.getElementById('themeIcon');
+        if (document.body.classList.contains('dark-mode')) {
+            themeIcon.classList.replace('bi-moon-fill', 'bi-sun-fill');
+            themeIcon.parentElement.innerHTML = `<span id="themeIcon" class="bi bi-sun-fill"></span> Light Mode`;
+        } else {
+            themeIcon.classList.replace('bi-sun-fill', 'bi-moon-fill');
+            themeIcon.parentElement.innerHTML = `<span id="themeIcon" class="bi bi-moon-fill"></span> Dark Mode`;
+        }
+    };
+
     return (
-        <div className="container-fluid">
-            <h2 className="text-center alert alert-danger mt-2">Django 4 And React JS 18 File Upload And Download</h2>
+        <div className="container-fluid py-4">
+            <div className="text-center mb-4">
+                <h2 className="title">VISTAS x VISUALIZE</h2>
+                <button className="btn btn-outline-secondary" id="themeToggle" onClick={toggleTheme}>
+                    <span id="themeIcon" className="bi bi-moon-fill"></span> Dark Mode
+                </button>
+            </div>
             <div className="row">
-                <div className="col-md-4">
-                    <h2 className="alert alert-success">File Upload Section</h2>
-                    <form>
-                        <div className="form-group">
-                            <label htmlFor="exampleFormControlFile1" className="float-left">
-                                Browse A File To Upload
-                            </label>
-                            <input type="file" onChange={(e) => setFilename(e.target.files[0])} className="form-control" />
+                <div className="col-md-4 mb-4">
+                    <div className="card shadow-sm">
+                        <div className="card-body">
+                            <h4 className="card-title">CSV File Upload</h4>
+                            <form>
+                                <div className="form-group mb-3">
+                                    <label htmlFor="exampleFormControlFile1" className="form-label">
+                                        Browse CSV File
+                                    </label>
+                                    <input
+                                        type="file"
+                                        onChange={(e) => setFilename(e.target.files[0])}
+                                        className="form-control"
+                                    />
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={saveFile}
+                                    className="btn btn-primary w-100"
+                                >
+                                    Submit
+                                </button>
+                                {status && <div className="alert alert-info mt-3">{status}</div>}
+                            </form>
                         </div>
-                        <button type="button" onClick={saveFile} className="btn btn-primary float-left mt-2">
-                            Submit
-                        </button>
-                        <br />
-                        <br />
-                        <br />
-                        {status ? <h2>{status}</h2> : null}
-                    </form>
+                    </div>
                 </div>
-                <div className="col-md-7">
-                    <h2 className="alert alert-success">List of Uploaded Files</h2>
-                    <table className="table table-bordered mt-4">
-                        <thead>
-                            <tr>
-                                <th scope="col">File Title</th>
-                                <th scope="col">Download</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {files.map((file) => {
-                                return (
+                <div className="col-md-8">
+                    <div className="card shadow-sm">
+                        <div className="card-body">
+                            <h4 className="card-title">Uploaded Datasets</h4>
+                            <table className="table table-hover mt-4">
+                                <thead>
                                     <tr>
-                                        <td>{file.csv}</td>
-                                        <td>
-                                            <a href="" target="_blank"></a>
-                                            <button onClick={() => downloadWithAxios(file.csv, file.id)} className="btn btn-success">
-                                                DownLoad
-                                            </button>
-                                        </td>
+                                        <th scope="col">Dataset Title</th>
+                                        <th scope="col">Download</th>
                                     </tr>
-                                );
-                            })}
-                        </tbody>
-                    </table>
+                                </thead>
+                                <tbody>
+                                    {files.map((file) => (
+                                        <tr key={file.id}>
+                                            <td className="dataset-title">{file.csv}</td>
+                                            <td>
+                                                <button
+                                                    onClick={() => downloadWithAxios(file.csv, file.id)}
+                                                    className="btn btn-success btn-sm"
+                                                >
+                                                    Download
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </div>    
     );
 }
 

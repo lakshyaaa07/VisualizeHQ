@@ -15,3 +15,28 @@
     text-align: center;
      
 }
+
+/* src/App.css */
+body.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+.dark-mode .card {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+.dark-mode .table-hover tbody tr:hover {
+  background-color: #2c2c2c;
+}
+
+.dark-mode .btn-primary {
+  background-color: #1a73e8;
+  border-color: #1a73e8;
+}
+
+.dark-mode .btn-success {
+  background-color: #34a853;
+  border-color: #34a853;
+}
