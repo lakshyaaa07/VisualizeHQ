@@ -103,6 +103,7 @@ function UploadFile() {
                                     </label>
                                     <input
                                         type="file"
+                                        accept='.csv, .xlsx'
                                         onChange={(e) => setFilename(e.target.files[0])}
                                         className="form-control"
                                     />

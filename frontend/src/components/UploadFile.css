@@ -45,7 +45,7 @@
 .dark-mode .btn-success {
     background-color: #34a853;
     border-color: #34a853;
-    color: #ffffff; /* Ensure button text is white */
+    color: #ffffff; 
 }
 
 .dark-mode .dataset-title {
