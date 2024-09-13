@@ -1,6 +1,6 @@
 import './App.css';
 import {useState,useEffect} from 'react';
-import DisplayCSVData from './components/DisplayCSVData';
+// import DisplayCSVData from './components/DisplayCSVData';
 
 
 
@@ -12,7 +12,7 @@ function App() {
 
       <header className="App-header">
         <h1>CSV Viewer</h1>
-        <DisplayCSVData fileId={fileId} />
+        {/* <DisplayCSVData fileId={fileId} /> */}
       </header>
     </div>
   );

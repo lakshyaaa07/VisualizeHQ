@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './UploadFile.css';
 
@@ -6,6 +7,7 @@ function UploadFile() {
     const [filename, setFilename] = useState('');
     const [files, setFiles] = useState([{}]);
     const [status, setStatus] = useState('');
+    const navigate = useNavigate(); // useNavigate hook for navigation
 
     let api = 'http://127.0.0.1:8000/api';
 
@@ -17,7 +19,7 @@ function UploadFile() {
 
         let axiosConfig = {
             headers: {
-                'Content-Type': 'multpart/form-data',
+                'Content-Type': 'multipart/form-data', // Corrected typo in header
             },
         };
 
@@ -83,6 +85,10 @@ function UploadFile() {
         }
     };
 
+    const handleVisualize = () => {
+        navigate('/visualize'); // Redirect to the visualize page
+    };
+
     return (
         <div className="container-fluid py-4">
             <div className="text-center mb-4">
@@ -117,6 +123,12 @@ function UploadFile() {
                                 </button>
                                 {status && <div className="alert alert-info mt-3">{status}</div>}
                             </form>
+                            <button
+                                className="btn btn-info w-100 mt-3"
+                                onClick={handleVisualize}
+                            >
+                                Visualize
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -132,17 +144,17 @@ function UploadFile() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {files.map((file) => (
-                                        <tr key={file.id}>
-                                            <td className="dataset-title">{file.csv}</td>
-                                            <td>
-                                                <button
-                                                    onClick={() => downloadWithAxios(file.csv, file.id)}
-                                                    className="btn btn-success btn-sm"
-                                                >
-                                                    Download
-                                                </button>
-                                            </td>
+                                    {files.map((file, index) => (
+                                        <tr key={index}>
+                                        <td className="dataset-title">{file.csv}</td>
+                                        <td>
+                                            <button
+                                            onClick={() => downloadWithAxios(file.csv, file.id)}
+                                            className="btn btn-success btn-sm"
+                                            >
+                                            Download
+                                            </button>
+                                        </td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -151,7 +163,7 @@ function UploadFile() {
                     </div>
                 </div>
             </div>
-        </div>    
+        </div>
     );
 }
 

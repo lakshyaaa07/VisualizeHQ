@@ -1,4 +1,3 @@
-// src/components/DisplayCSVData.js
 import React, { useEffect, useState } from 'react';
 
 const DisplayCSVData = ({ fileId }) => {
@@ -7,7 +6,7 @@ const DisplayCSVData = ({ fileId }) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetch(`/api/files/${fileId}/`)
+        fetch(`/api/files/8/`)
             .then(response => response.json())
             .then(data => {
                 if (data.error) {

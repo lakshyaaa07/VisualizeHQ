@@ -5,21 +5,22 @@ import '../src/resources/css/bootstrap.min.css'
 import App from './App';
 // import Home from './components/Home';
 import reportWebVitals from './reportWebVitals';
-import {Route, BrowserRouter,Routes} from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import UploadFile from './components/UploadFile'
 import DisplayCSVData from './components/DisplayCSVData';
 // import './global.css';
 
 
-function Router(){
+function Index(){
   return(
-<BrowserRouter>
-    <Routes>
-      <Route exact path="/" element={<UploadFile />} />
-      <Route exact path="/app" element={<App />} />
-      {/* <Route exact path="/home" element={<Home />} /> */}
-    </Routes>
-</BrowserRouter>
+    <BrowserRouter>
+        <Routes>
+          <Route exact path="/" element={<UploadFile />} />
+          <Route exact path="/app" element={<App />} />
+          <Route exact path="/visualize" element={<DisplayCSVData />} />
+        </Routes>
+    </BrowserRouter>
   );
 }
 
@@ -28,7 +29,7 @@ function Router(){
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Router />
+    <Index />
   </React.StrictMode>
 );
 
