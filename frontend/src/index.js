@@ -9,6 +9,7 @@ import { BrowserRouter } from 'react-router-dom';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import UploadFile from './components/UploadFile'
 import DisplayCSVData from './components/DisplayCSVData';
+import Visualise from './components/Visualise';
 // import './global.css';
 
 
@@ -18,7 +19,10 @@ function Index(){
         <Routes>
           <Route exact path="/" element={<UploadFile />} />
           <Route exact path="/app" element={<App />} />
-          <Route exact path="/visualize" element={<DisplayCSVData />} />
+          <Route exact path="/preview" element={<DisplayCSVData />} />
+          <Route exact path="/visualise" element={<Visualise />} />
+
+
         </Routes>
     </BrowserRouter>
   );
