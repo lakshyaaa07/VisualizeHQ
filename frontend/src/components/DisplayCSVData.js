@@ -37,9 +37,12 @@ const DisplayCSVData = () => {
         navigate("/")
     }
 
-    const handleVisualise = () =>{
-        navigate(`/visualise` )
-    }
+    // const handleVisualise = () =>{
+    //     navigate(`/visualise` )
+    // }
+    const handleVisualise = () => {
+        navigate(`/visualise`, { state: { fileId } }); // Pass the fileId
+      };
 
 
 
@@ -80,7 +83,7 @@ const DisplayCSVData = () => {
 <tr>
             <td><button type="button" class="btn btn-info" onClick={back} >Home</button> </td>
 
-            <td><button type='button' class="btn btn-success">Visualize</button></td>
+            <td><button type='button' class="btn btn-success" onClick={handleVisualise}>Visualize</button></td>
             </tr>
 
             </table>

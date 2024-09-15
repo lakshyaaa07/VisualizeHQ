@@ -1,0 +1,53 @@
+/* .fade-enter {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  .fade-enter-active {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 300ms, transform 300ms;
+  }
+  .fade-exit {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .fade-exit-active {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 300ms, transform 300ms;
+  }
+  .chart-wrapper {
+    margin-top: 20px;
+  }
+  .chart-selector {
+    margin-bottom: 20px;
+  } */
+
+  .fade-enter {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  .fade-enter-active {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 300ms, transform 300ms;
+  }
+  .fade-exit {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .fade-exit-active {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 300ms, transform 300ms;
+  }
+  .chart-wrapper {
+    margin-top: 20px;
+  }
+  .chart-selector {
+    margin-bottom: 20px;
+  }
+  .form-select {
+    margin: 5px 10px 15px 0;
+    width: 200px;
+  }
