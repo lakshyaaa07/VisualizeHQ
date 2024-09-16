@@ -1,53 +1,137 @@
-/* .fade-enter {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  .fade-enter-active {
-    opacity: 1;
-    transform: scale(1);
-    transition: opacity 300ms, transform 300ms;
-  }
-  .fade-exit {
-    opacity: 1;
-    transform: scale(1);
-  }
-  .fade-exit-active {
-    opacity: 0;
-    transform: scale(0.9);
-    transition: opacity 300ms, transform 300ms;
-  }
-  .chart-wrapper {
-    margin-top: 20px;
-  }
-  .chart-selector {
-    margin-bottom: 20px;
-  } */
+/* Fade transition styles */
+.fade-enter {
+  opacity: 0;
+  transform: scale(0.9);
+}
+.fade-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 300ms, transform 300ms;
+}
+.fade-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+.fade-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 300ms, transform 300ms;
+}
 
-  .fade-enter {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  .fade-enter-active {
-    opacity: 1;
-    transform: scale(1);
-    transition: opacity 300ms, transform 300ms;
-  }
-  .fade-exit {
-    opacity: 1;
-    transform: scale(1);
-  }
-  .fade-exit-active {
-    opacity: 0;
-    transform: scale(0.9);
-    transition: opacity 300ms, transform 300ms;
-  }
-  .chart-wrapper {
-    margin-top: 20px;
-  }
-  .chart-selector {
-    margin-bottom: 20px;
-  }
-  .form-select {
-    margin: 5px 10px 15px 0;
-    width: 200px;
-  }
+/* General styles for the container */
+.visualise-container {
+  background-color: #f5f5f5; /* Light mode background */
+  color: #333; /* Light mode text color */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+}
+
+.dark .visualise-container {
+  background-color: #121212; /* Dark mode background */
+  color: #e0e0e0; /* Dark mode text color */
+}
+
+/* Chart wrapper styles */
+.chart-wrapper {
+  margin-top: 20px;
+  background-color: #fff; /* Light mode chart background */
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%; /* Ensure full width for responsiveness */
+}
+
+.dark .chart-wrapper {
+  background-color: #333; /* Dark mode chart background */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  color: #e0e0e0; /* Dark mode chart text */
+}
+
+/* Chart selector styles */
+.selection-container {
+  border: 2px solid #ccc;
+  background-color: #fff; /* Light mode selector background */
+}
+
+.dark .selection-container {
+  border-color: #666;
+  background-color: #555; /* Dark mode selector background */
+}
+
+/* Dropdown and button styling */
+.form-select {
+  margin: 5px 10px 15px 0;
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #fff; /* Light mode select background */
+  color: #333; /* Light mode select text */
+}
+
+.dark .form-select {
+  background-color: #555; /* Dark mode select background */
+  border-color: #666;
+  color: #e0e0e0; /* Dark mode select text */
+}
+
+/* Button styles */
+.generate-button {
+  margin-top: 20px; /* Adjust margin to shift the button lower */
+  padding: 10px 20px; /* Ensure padding is sufficient for the button */
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+  background-color: #3b82f6; /* Light mode button background */
+  color: #fff; /* Button text color */
+}
+
+.dark .generate-button {
+  background-color: #1d4ed8; /* Dark mode button background */
+  color: #fff; /* Button text color in dark mode */
+}
+
+.generate-button:hover {
+  background-color: #2563eb; /* Hover effect for light mode */
+}
+
+.dark .generate-button:hover {
+  background-color: #1e40af; /* Hover effect for dark mode */
+}
+
+/* Info background styling */
+.bg-info {
+  background-color: #17a2b8; /* Light mode info background */
+}
+
+.dark .bg-info {
+  background-color: #0056b3; /* Dark mode info background */
+}
+
+/* General text colors */
+.text-white {
+  color: #fff; /* White text */
+}
+
+.text-gray-300 {
+  color: #d1d5db; /* Light mode gray */
+}
+
+.text-gray-500 {
+  color: #6b7280; /* Light mode dark gray */
+}
+
+.dark .text-gray-500, .dark .text-gray-300 {
+  color: #e0e0e0; /* Dark mode light gray */
+}
+
+/* Transform hover effect */
+.transform:hover {
+  transform: scale(1.05);
+}
+
+.mt-6 {
+  margin-top: 24px;
+}

@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -7,11 +5,12 @@ import './UploadFile.css';
 
 function UploadFile() {
     const [filename, setFilename] = useState('');
-    const [files, setFiles] = useState([{}]);
+    const [files, setFiles] = useState([]);
     const [status, setStatus] = useState('');
+    const [isDarkMode, setIsDarkMode] = useState(false);
     const navigate = useNavigate(); // useNavigate hook for navigation
 
-    let api = 'http://127.0.0.1:8000/api';
+    const api = 'http://127.0.0.1:8000/api';
 
     const saveFile = () => {
         let formData = new FormData();
@@ -46,128 +45,171 @@ function UploadFile() {
 
     useEffect(() => {
         getFiles();
+        // Add transition effect on page load
+        document.body.classList.add('transition-opacity');
+        setTimeout(() => {
+            document.body.classList.remove('transition-opacity');
+        }, 300);
+        // Check dark mode preference on page load
+        const darkMode = localStorage.getItem('darkMode') === 'true';
+        if (darkMode) {
+            document.body.classList.add('dark');
+            setIsDarkMode(true);
+        }
     }, []);
-
-    // const handleVisualize = () => {
-    //     navigate('/visualize'); // Redirect to the visualize page
-    // };
 
     const handlePreviewRedirect = (fileId) => {
         navigate(`/preview`, { state: { fileId } }); 
-        // Pass the fileId in the state
     };
 
     const toggleTheme = () => {
-                document.body.classList.toggle('dark-mode');
-                const themeIcon = document.getElementById('themeIcon');
-                if (document.body.classList.contains('dark-mode')) {
-                    themeIcon.classList.replace('bi-moon-fill', 'bi-sun-fill');
-                    themeIcon.parentElement.innerHTML = `<span id="themeIcon" class="bi bi-sun-fill"></span> Light Mode`;
-                } else {
-                    themeIcon.classList.replace('bi-sun-fill', 'bi-moon-fill');
-                    themeIcon.parentElement.innerHTML = `<span id="themeIcon" class="bi bi-moon-fill"></span> Dark Mode`;
-                }
-            };
-            const downloadWithAxios = (url, title) => {
-                        axios({
-                            method: 'get',
-                            url,
-                            responseType: 'arraybuffer',
-                        })
-                            .then((response) => {
-                                forceDownload(response, title);
-                            })
-                            .catch((error) => console.log(error));
-                    };
-                    const forceDownload = (response, title) => {
-                                console.log(response);
-                                const url = window.URL.createObjectURL(new Blob([response.data]));
-                                const link = document.createElement('a');
-                                link.href = url;
-                                link.setAttribute('download', title + '.csv');
-                                document.body.appendChild(link);
-                                link.click();
-                            };
+        const newDarkMode = !isDarkMode;
+        setIsDarkMode(newDarkMode);
+        if (newDarkMode) {
+            document.body.classList.add('dark');
+            localStorage.setItem('darkMode', 'true');
+        } else {
+            document.body.classList.remove('dark');
+            localStorage.setItem('darkMode', 'false');
+        }
+    };
+
+    const downloadWithAxios = (url, title) => {
+        axios({
+            method: 'get',
+            url,
+            responseType: 'arraybuffer',
+        })
+            .then((response) => {
+                forceDownload(response, title);
+            })
+            .catch((error) => console.log(error));
+    };
+
+    const forceDownload = (response, title) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', title + '.csv');
+        document.body.appendChild(link);
+        link.click();
+    };
+
     return (
-        <div className="container-fluid py-4">
-            <div className="text-center mb-4">
-                <h2 className="title">VISTAS x VISUALIZE</h2>
-                <button className="btn btn-outline-secondary" id="themeToggle" onClick={toggleTheme}>
-                    <span id="themeIcon" className="bi bi-moon-fill"></span> Dark Mode
+        <div className="container mx-auto p-6 transition-opacity duration-300 ease-in-out dark:bg-gray-900 dark:text-gray-100">
+            <div className="text-center mb-6">
+                <h2 className="text-3xl font-extrabold mb-4">VISTAS x VISUALIZE</h2>
+                <button
+                    className="bg-gray-200 text-gray-800 px-6 py-3 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-300 transition-transform transform hover:scale-105 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600 dark:hover:bg-gray-600"
+                    id="themeToggle"
+                    onClick={toggleTheme}
+                >
+                    {isDarkMode ? (
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-6 w-6 mr-2"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        >
+                            <path d="M12 3v1M12 20v1M4.22 4.22l.707.707M17.07 17.07l.707.707M3 12h1M20 12h1M4.22 19.78l.707-.707M17.07 6.93l.707-.707" />
+                        </svg>
+                    ) : (
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-6 w-6 mr-2"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        >
+                            <circle cx="12" cy="12" r="5" />
+                            <path d="M12 1v2M12 21v2M4.22 4.22l1.41 1.41M17.07 17.07l1.41 1.41M1 12h2M21 12h2M4.22 19.78l1.41-1.41M17.07 6.93l1.41-1.41" />
+                        </svg>
+                    )}
+                    {isDarkMode ? 'Light Mode' : 'Dark Mode'}
                 </button>
             </div>
-            <div className="row">
-                <div className="col-md-4 mb-4">
-                    <div className="card shadow-sm">
-                        <div className="card-body">
-                            <h4 className="card-title">CSV File Upload</h4>
-                            <form>
-                                <div className="form-group mb-3">
-                                    <label htmlFor="exampleFormControlFile1" className="form-label">
-                                        Browse CSV File
-                                    </label>
-                                    <input
-                                        type="file"
-                                        accept=".csv, .xlsx"
-                                        onChange={(e) => setFilename(e.target.files[0])}
-                                        className="form-control"
-                                    />
-                                </div>
-                                <button
-                                    type="button"
-                                    onClick={saveFile}
-                                    className="btn btn-primary w-100"
-                                >
-                                    Submit
-                                </button>
-                                {status && <div className="alert alert-info mt-3">{status}</div>}
-                            </form>
-                            {/* <button
-                                className="btn btn-info w-100 mt-3"
-                                // onClick={handleVisualize}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="col-span-1">
+                    <div className="bg-white shadow-lg rounded-lg p-8 transition-transform transform hover:scale-105 dark:bg-gray-800 dark:text-gray-100">
+                        <h4 className="text-2xl font-semibold mb-4">CSV File Upload</h4>
+                        <form>
+                            <div className="mb-6">
+                                <label htmlFor="fileInput" className="block text-gray-700 mb-2 text-sm font-medium dark:text-gray-300">
+                                    Browse CSV File
+                                </label>
+                                <input
+                                    type="file"
+                                    accept=".csv, .xlsx"
+                                    onChange={(e) => setFilename(e.target.files[0])}
+                                    id="fileInput"
+                                    className="border border-gray-300 rounded-md p-3 w-full bg-gray-50 file:border-gray-300 file:bg-gray-200 file:text-gray-700 file:py-2 file:px-4 file:rounded-md file:cursor-pointer dark:bg-gray-700 dark:border-gray-600 dark:file:border-gray-600 dark:file:bg-gray-800 dark:file:text-gray-300"
+                                />
+                            </div>
+                            <button
+                                type="button"
+                                onClick={saveFile}
+                                className="bg-blue-500 text-white px-6 py-3 rounded-full w-full hover:bg-blue-600 transition-transform transform hover:scale-105 dark:bg-blue-600 dark:hover:bg-blue-700"
                             >
-                                Visualize
-                            </button> */}
-                        </div>
+                                Submit
+                            </button>
+                            {status && (
+                                <div className="bg-blue-100 text-blue-800 border border-blue-300 p-4 mt-4 rounded-lg dark:bg-blue-700 dark:text-blue-200 dark:border-blue-600">
+                                    {status}
+                                </div>
+                            )}
+                        </form>
                     </div>
                 </div>
-                <div className="col-md-8">
-                    <div className="card shadow-sm">
-                        <div className="card-body">
-                            <h4 className="card-title">Uploaded Datasets</h4>
-                            <table className="table table-hover mt-4">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Dataset Title</th>
-                                        <th scope="col">Download</th>
-                                        <th scope="col">Preview</th>
+                <div className="col-span-2">
+                    <div className="bg-white shadow-lg rounded-lg p-8 dark:bg-gray-800">
+                        <h4 className="text-2xl font-semibold mb-4 dark:text-gray-100">Uploaded Datasets</h4>
+                        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
+                            <thead className="bg-gray-100 dark:bg-gray-700">
+                                <tr>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">
+                                        Dataset Title
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">
+                                        Download
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">
+                                        Preview
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800">
+                                {files.map((file, index) => (
+                                    <tr key={index}>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
+                                            {file.csv}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                                            <button
+                                                onClick={() => downloadWithAxios(file.csv, file.id)}
+                                                className="bg-green-500 text-white px-4 py-2 rounded-full text-sm hover:bg-green-600 transition-transform transform hover:scale-105 dark:bg-green-600 dark:hover:bg-green-700"
+                                            >
+                                                Download
+                                            </button>
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                                            <button
+                                                onClick={() => handlePreviewRedirect(file.id)}
+                                                className="bg-blue-500 text-white px-4 py-2 rounded-full text-sm hover:bg-blue-600 transition-transform transform hover:scale-105 dark:bg-blue-600 dark:hover:bg-blue-700"
+                                            >
+                                                View CSV Preview
+                                            </button>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    {files.map((file, index) => (
-                                        <tr key={index}>
-                                            <td className="dataset-title">{file.csv}</td>
-                                            <td>
-                                                <button
-                                                    onClick={() => downloadWithAxios(file.csv, file.id)}
-                                                    className="btn btn-success btn-sm"
-                                                >
-                                                    Download
-                                                </button>
-                                            </td>
-                                            <td>
-                                                <button
-                                                    onClick={() => handlePreviewRedirect(file.id)}
-                                                    className="btn btn-info btn-sm"
-                                                >
-                                                    View CSV Preview
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
+                                ))}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

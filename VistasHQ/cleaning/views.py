@@ -7,7 +7,6 @@ from django.http import JsonResponse, Http404, FileResponse
 from django.shortcuts import get_object_or_404
 from .models import Files 
 import os
-import pandas as pd
 from io import StringIO
 from django.conf import settings
 # import magic
