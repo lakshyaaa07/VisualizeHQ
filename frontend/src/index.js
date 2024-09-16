@@ -10,6 +10,11 @@ import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import UploadFile from './components/UploadFile'
 import DisplayCSVData from './components/DisplayCSVData';
 import Visualise from './components/Visualise';
+import Signup from './components/Signup';
+import Login from './components/Login';
+import Logout from './components/Logout';
+// import { AuthProvider } from './context/Auth';
+
 // import './global.css';
 
 
@@ -21,10 +26,13 @@ function Index(){
           <Route exact path="/app" element={<App />} />
           <Route exact path="/preview" element={<DisplayCSVData />} />
           <Route exact path="/visualise" element={<Visualise />} />
-
+          <Route path="/signup" element={<Signup />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/logout" element={<Logout />} />
 
         </Routes>
     </BrowserRouter>
+    
   );
 }
 
@@ -40,4 +48,4 @@ root.render(
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+reportWebVitals();  
