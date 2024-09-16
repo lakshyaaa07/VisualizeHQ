@@ -27,8 +27,8 @@ function Index(){
           <Route exact path="/preview" element={<DisplayCSVData />} />
           <Route exact path="/visualise" element={<Visualise />} />
           <Route path="/signup" element={<Signup />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/logout" element={<Logout />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/logout" element={<Logout />} />
 
         </Routes>
     </BrowserRouter>

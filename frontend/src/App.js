@@ -1,21 +1,30 @@
-import './App.css';
-import {useState,useEffect} from 'react';
-// import DisplayCSVData from './components/DisplayCSVData';
+import ButtonGradient from "./assets/svg/ButtonGradient";
+import Benefits from "./components/Benefits";
+import Collaboration from "./components/Collaboration";
+import Footer from "./components/Footer";
+import Header from "./components/Header";
+import Hero from "./components/Hero";
+import Pricing from "./components/Pricing";
+import Roadmap from "./components/Roadmap";
+import Services from "./components/Services";
 
-
-
-function App() {
-  const fileId = 1;
-
+const App = () => {
   return (
-    <div className="App">
+    <>
+      <div className="pt-[4.75rem] lg:pt-[5.25rem] overflow-hidden">
+        <Header />
+        <Hero />
+        <Benefits />
+        <Collaboration />
+        <Services />
+        <Pricing />
+        <Roadmap />
+        <Footer />
+      </div>
 
-      <header className="App-header">
-        <h1>CSV Viewer</h1>
-        {/* <DisplayCSVData fileId={fileId} /> */}
-      </header>
-    </div>
+      <ButtonGradient />
+    </>
   );
-}
+};
 
 export default App;
