@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Header from "./Header";
+import Footer from "./Footer";
+import ButtonGradient from "../assets/svg/ButtonGradient";
 
 const DisplayCSVData = () => {
     const [previewData, setPreviewData] = useState(null);
@@ -43,6 +46,8 @@ const DisplayCSVData = () => {
     if (error) return <div className="text-center text-red-500 dark:text-red-400">Error: {error}</div>;
 
     return (
+        <div className="pt-[4.75rem] lg:pt-[5.25rem] overflow-hidden">
+        <Header/>
         <div className="p-4 max-w-screen-xl mx-auto">
             <h2 className="text-3xl font-bold text-center mb-6 dark:text-gray-100">CSV Preview</h2>
             {previewData && (
@@ -90,6 +95,9 @@ const DisplayCSVData = () => {
                     Visualize
                 </button>
             </div>
+        </div>
+        <Footer/>
+        <ButtonGradient/>
         </div>
     );
 };

@@ -6,6 +6,7 @@ import pandas as pd
 from django.http import JsonResponse, Http404, FileResponse
 from django.shortcuts import get_object_or_404
 from .models import Files 
+from django.core.paginator import Paginator
 import os
 from io import StringIO
 from django.conf import settings
