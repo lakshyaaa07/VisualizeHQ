@@ -23,8 +23,8 @@ function Index(){
   return(
     <BrowserRouter>
         <Routes>
-          <Route exact path="/" element={<UploadFile />} />
-          <Route exact path="/app" element={<App />} />
+          <Route exact path="/upload" element={<UploadFile />} />
+          <Route exact path="/" element={<App />} />
           <Route exact path="/preview" element={<DisplayCSVData />} />
           <Route exact path="/visualise" element={<Visualise />} />
           <Route path="/signup" element={<Signup />} />

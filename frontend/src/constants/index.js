@@ -34,6 +34,11 @@ import {
   telegram,
   twitter,
   yourlogo,
+  powerbi,
+  google,
+  tableau,
+  zoho,
+  looker,
 } from "../assets";
 
 export const navigation = [
@@ -128,7 +133,7 @@ export const roadmap = [
 ];
 
 export const collabText =
-  "With smart automation and top-notch security, it's the perfect solution for teams looking to work smarter.";
+  "With advanced data visualization and easy-to-use dashboards, VisualizeHQ helps businesses turn raw data into actionable insights, seamlessly.";
 
 export const collabContent = [
   {
@@ -138,26 +143,26 @@ export const collabContent = [
   },
   {
     id: "1",
-    title: "Smart Automation",
+    title: "Advanced Analytics",
   },
   {
     id: "2",
-    title: "Top-notch Security",
+    title: "Enterprise-Grade Security",
   },
 ];
 
 export const collabApps = [
   {
     id: "0",
-    title: "Figma",
-    icon: figma,
+    title: "PowerBI",
+    icon: powerbi,
     width: 26,
     height: 36,
   },
   {
     id: "1",
-    title: "Notion",
-    icon: notion,
+    title: "Tableau",
+    icon: tableau,
     width: 34,
     height: 36,
   },
@@ -177,15 +182,15 @@ export const collabApps = [
   },
   {
     id: "4",
-    title: "Photoshop",
-    icon: photoshop,
+    title: "GoogleDataStudio",
+    icon: google,
     width: 34,
     height: 34,
   },
   {
     id: "5",
-    title: "Protopie",
-    icon: protopie,
+    title: "Zoho Analytics",
+    icon: zoho,
     width: 34,
     height: 34,
   },
@@ -198,8 +203,8 @@ export const collabApps = [
   },
   {
     id: "7",
-    title: "Raindrop",
-    icon: raindrop,
+    title: "Looker by Google",
+    icon: looker,
     width: 38,
     height: 32,
   },
@@ -244,16 +249,16 @@ export const pricing = [
 export const benefits = [
   {
     id: "0",
-    title: "Ask anything",
-    text: "Lets users quickly find answers to their questions without having to search through multiple sources.",
+    title: "Visualize & Understand Your Data",
+    text: "VisualizeHQ is the ultimate platform for making sense of your data. With our cutting-edge visualizations and dynamic dashboards.",
     backgroundUrl: "assets/benefits/card-1.svg",
     iconUrl: benefitIcon1,
     imageUrl: benefitImage2,
   },
   {
     id: "1",
-    title: "Improve everyday",
-    text: "The app uses natural language processing to understand user queries and provide accurate and relevant responses.",
+    title: "Dynamic Dashboards & Reports",
+    text: "Whether you need sales reports, performance analysis, or custom data views, VisualizeHQ offers a wide variety of pre-built dashboards.",
     backgroundUrl: "assets/benefits/card-2.svg",
     iconUrl: benefitIcon2,
     imageUrl: benefitImage2,
@@ -261,16 +266,16 @@ export const benefits = [
   },
   {
     id: "2",
-    title: "Connect everywhere",
-    text: "Connect with the AI chatbot from anywhere, on any device, making it more accessible and convenient.",
+    title: "Seamless Data Uploads & Visuals",
+    text: "Our intuitive platform allows you to upload your datasets easily. VisualizeHQ quickly processes this data and offers a variety of options to visualize it",
     backgroundUrl: "assets/benefits/card-3.svg",
     iconUrl: benefitIcon3,
     imageUrl: benefitImage2,
   },
   {
     id: "3",
-    title: "Fast responding",
-    text: "Lets users quickly find answers to their questions without having to search through multiple sources.",
+    title: "From Data to Insight",
+    text: "Harness the power of VisualizeHQ to transform raw data into meaningful insights. No more complicated formulas or data management.",
     backgroundUrl: "assets/benefits/card-4.svg",
     iconUrl: benefitIcon4,
     imageUrl: benefitImage2,
@@ -278,8 +283,8 @@ export const benefits = [
   },
   {
     id: "4",
-    title: "Ask anything",
-    text: "Lets users quickly find answers to their questions without having to search through multiple sources.",
+    title: "Visualize & Understand Your Data",
+    text: "VisualizeHQ is the ultimate platform for making sense of your data. With our cutting-edge visualizations and dynamic dashboards.",
     backgroundUrl: "assets/benefits/card-5.svg",
     iconUrl: benefitIcon1,
     imageUrl: benefitImage2,

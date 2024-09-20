@@ -1,4 +1,4 @@
-import { brainwaveSymbol, check } from "../assets";
+import { brainwaveSymbol, check, vizLogo } from "../assets";
 import { collabApps, collabContent, collabText } from "../constants";
 import Button from "./Button";
 import Section from "./Section";
@@ -10,7 +10,7 @@ const Collaboration = () => {
       <div className="container lg:flex">
         <div className="max-w-[25rem]">
           <h2 className="h2 mb-4 md:mb-8">
-            AI Chat App for seamless collaboration
+            Data Visualization Platform for Seamless Insights
           </h2>
 
           <ul className="max-w-[22rem] mb-10 md:mb-14">
@@ -40,7 +40,7 @@ const Collaboration = () => {
               <div className="w-[6rem] aspect-square m-auto p-[0.2rem] bg-conic-gradient rounded-full">
                 <div className="flex items-center justify-center w-full h-full bg-n-8 rounded-full">
                   <img
-                    src={brainwaveSymbol}
+                    src={vizLogo}
                     width={48}
                     height={48}
                     alt="brainwave"

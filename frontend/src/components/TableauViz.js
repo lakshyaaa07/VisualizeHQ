@@ -151,19 +151,19 @@ function TableauViz() {
   };
 
   return (
-    <div className="pt-[4.75rem] lg:pt-[8.25rem] overflow-hidden">
-      <Header />
-      <div className="container mx-auto p-6 transition-opacity justify-center duration-300 ease-in-out dark:bg-gray-900 dark:text-gray-100">
-        <button
-          onClick={handleBack}
-          className="bg-blue-500 justify-center text-white px-4 py-2 rounded hover:bg-blue-600 transition-transform transform hover:scale-105 mb-6"
-        >
-          Go Back
-        </button>
+    // <div className="pt-[4.75rem] lg:pt-[8.25rem] overflow-hidden">
+    //   <Header />
+    //   <div className="container mx-auto p-6 transition-opacity justify-center duration-300 ease-in-out dark:bg-gray-900 dark:text-gray-100">
+    //     <button
+    //       onClick={handleBack}
+    //       className="bg-blue-500 justify-center text-white px-4 py-2 rounded hover:bg-blue-600 transition-transform transform hover:scale-105 mb-6"
+    //     >
+    //       Go Back
+    //     </button>
         <div id="tableauViz" className="w-full flex justify-center items-center"></div>
-      </div>
-      <Footer />
-    </div>
+      // </div>
+      // <Footer />
+    // </div>
   );
 }
 

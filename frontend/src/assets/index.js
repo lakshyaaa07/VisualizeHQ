@@ -1,6 +1,7 @@
 import brainwave from "./brainwave.svg";
 import check from "./check.svg";
 import brainwaveSymbol from "./brainwave-symbol.svg";
+import vizLogo from "./viz-logo.svg";
 import brainwaveWhiteSymbol from "./brainwave-symbol-white.svg";
 import play from "./play.svg";
 import gradient from "./gradient.png";
@@ -35,6 +36,11 @@ import photoshop from "./collaboration/photoshop.png";
 import protopie from "./collaboration/protopie.png";
 import raindrop from "./collaboration/raindrop.png";
 import slack from "./collaboration/slack.png";
+import powerbi from "./collaboration/powerbi.png";
+import google from "./collaboration/googleDS.png";
+import tableau from "./collaboration/tableau.png";
+import zoho from "./collaboration/zoho.png";
+import looker from "./collaboration/goolgleLooker.png";
 
 import service1 from "./services/service-1.png";
 import service2 from "./services/service-2.png";
@@ -81,6 +87,7 @@ export {
   check2,
   loading1,
   brainwaveSymbol,
+  vizLogo,
   brainwaveWhiteSymbol,
   play,
   gradient,
@@ -144,4 +151,9 @@ export {
   instagram,
   telegram,
   twitter,
+  powerbi,
+  google,
+  tableau,
+  zoho,
+  looker,
 };
