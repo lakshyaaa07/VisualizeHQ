@@ -25,7 +25,7 @@ def serve_csv_file(request, file_id):
     csv_file = get_object_or_404(Files, id=file_id)  
 
     # Assuming your file is stored on disk and the path is stored in the model
-    file_path = csv_file.file.path  # Adjust this line if necessary
+    file_path = csv_file.file.path 
 
     if os.path.exists(file_path):
         df=pd.read_csv(file_path)

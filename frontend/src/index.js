@@ -13,6 +13,7 @@ import Visualise from './components/Visualise';
 import Signup from './components/Signup';
 import Login from './components/Login';
 import Logout from './components/Logout';
+import TableauViz from './components/TableauViz';
 // import { AuthProvider } from './context/Auth';
 
 // import './global.css';
@@ -29,6 +30,7 @@ function Index(){
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
+          <Route path="/tableau-viz" element={<TableauViz />} />
 
         </Routes>
     </BrowserRouter>

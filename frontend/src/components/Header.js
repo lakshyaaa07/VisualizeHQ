@@ -67,7 +67,7 @@ const Header = () => {
           <HamburgerMenu />
         </nav>
 
-        <a
+        {/* <a
           href="#signup"
           className="button hidden mr-8 text-n-1/50 transition-colors hover:text-n-1 lg:block"
         >
@@ -75,7 +75,7 @@ const Header = () => {
         </a>
         <Button className="hidden lg:flex" href="#login">
           Sign in
-        </Button>
+        </Button> */}
 
         <Button
           className="ml-auto lg:hidden"
