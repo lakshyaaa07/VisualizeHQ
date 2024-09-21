@@ -14,6 +14,7 @@ import Signup from './components/Signup';
 import Login from './components/Login';
 import Logout from './components/Logout';
 import TableauViz from './components/TableauViz';
+import DisplayInsights from './components/DisplayInsights';
 // import { AuthProvider } from './context/Auth';
 
 // import './global.css';
@@ -26,6 +27,7 @@ function Index(){
           <Route exact path="/upload" element={<UploadFile />} />
           <Route exact path="/" element={<App />} />
           <Route exact path="/preview" element={<DisplayCSVData />} />
+          <Route path="/display-insights" element={<DisplayInsights />} />
           <Route exact path="/visualise" element={<Visualise />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />

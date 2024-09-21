@@ -6,6 +6,7 @@ import ButtonGradient from "../assets/svg/ButtonGradient";
 import axios from 'axios';
 import './UploadFile.css';
 import TableauViz from './TableauViz';
+import DisplayInsights from './DisplayInsights';
 
 function UploadFile() {
     const [filename, setFilename] = useState(null);
@@ -71,7 +72,7 @@ function UploadFile() {
         }
     }, []);
 
-    const handlePreviewRedirect = (fileId) => {
+    const handleFilePreviewRedirect = (fileId) => {
         navigate(`/preview`, { state: { fileId } });
     };
 
@@ -152,6 +153,12 @@ function UploadFile() {
                 setStatus('Error Deleting File');
             });
     };
+
+        // Handle preview and show insights for selected file
+    const handleInsightsRedirect = (fileId) => {
+        navigate(`/display-insights`, { state: { fileId } });
+    };
+
 
     return (
         <div className="pt-[4.75rem] lg:pt-[5.25rem] overflow-hidden">
@@ -253,6 +260,9 @@ function UploadFile() {
                                             Preview
                                         </th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">
+                                                Insights
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">
                                             Delete
                                         </th>
                                     </tr>
@@ -273,11 +283,19 @@ function UploadFile() {
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
                                                 <button
-                                                    onClick={() => handlePreviewRedirect(file.id)}
+                                                    onClick={() => handleFilePreviewRedirect(file.id)}
                                                     className="bg-blue-500 text-white px-4 py-2 rounded-full text-sm hover:bg-blue-600 transition-transform transform hover:scale-105 dark:bg-blue-600 dark:hover:bg-blue-700"
                                                 >
                                                     Preview
                                                 </button>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                                                    <button
+                                                        onClick={() => handleInsightsRedirect(file.id)}
+                                                        className="bg-green-500 text-white px-4 py-2 rounded-full text-sm hover:bg-green-600 transition-transform transform hover:scale-105 dark:bg-green-600 dark:hover:bg-green-700"
+                                                    >
+                                                        Insights
+                                                    </button>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
                                                 <button
@@ -295,6 +313,8 @@ function UploadFile() {
                     </div>
                 </div>
             )}
+
+            {/* {selectedFileId && <DisplayInsights fileId={selectedFileId} />} */}
             </div>
             <Footer/>
             <ButtonGradient/>

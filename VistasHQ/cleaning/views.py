@@ -116,24 +116,25 @@ def view_csv_preview(request, file_id):
         raise Http404("File not found")
     
     
-@api_view(['POST'])
+@api_view(['GET'])
 def get_data_insights(request, file_id):
     # Fetch the CSV file object from the database
     csv_file = get_object_or_404(Files, id=file_id)
     csv_path = csv_file.csv.path
 
     try:
+        print(f"Fetching insights for file: {file_id} at path: {csv_path}")
         df = pd.read_csv(csv_path)
         # Generate basic statistical insights for each column
         insights = {}
         for column in df.select_dtypes(include=['float64', 'int64']):
             insights[column] = {
-                'mean': df[column].mean(),
-                'median': df[column].median(),
-                'variance': df[column].var(),
-                'std_dev': df[column].std(),
-                'max': df[column].max(),
-                'min': df[column].min(),
+                'mean': float(df[column].mean()),  # Convert to float
+                'median': float(df[column].median()),  # Convert to float
+                'variance': float(df[column].var()),  # Convert to float
+                'std_dev': float(df[column].std()),  # Convert to float
+                'max': float(df[column].max()),  # Convert to float
+                'min': float(df[column].min()),  # Convert to float
             }
         
         return JsonResponse({'insights': insights})
@@ -145,14 +146,17 @@ def get_data_insights(request, file_id):
 
 @api_view(['POST'])
 def get_predictions(request, file_id):
-    # Fetch the CSV file object from the database
     csv_file = get_object_or_404(Files, id=file_id)
     csv_path = csv_file.csv.path
 
     try:
         df = pd.read_csv(csv_path)
-        # Assuming the dataset has a 'date' column and a 'value' column
-        df['date'] = pd.to_datetime(df['date'])
+        print(df.columns)  # Check available columns
+        # Ensure the correct column names
+        if 'date' not in df.columns or 'value' not in df.columns:
+            return JsonResponse({'error': 'Missing required columns: date or value'}, status=400)
+
+        df['date'] = pd.to_datetime(df['date'])  # Convert to datetime
         df_prophet = df[['date', 'value']].rename(columns={'date': 'ds', 'value': 'y'})
 
         # Train the Prophet model

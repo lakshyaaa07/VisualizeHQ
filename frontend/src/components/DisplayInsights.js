@@ -1,24 +1,44 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useLocation } from 'react-router-dom';
 
-function DisplayInsights({ fileId }) {
+function DisplayInsights() {
+    const location = useLocation();
+    const { fileId } = location.state || {}; // Accessing fileId from location.state
     const [insights, setInsights] = useState(null);
+    const [predictions, setPredictions] = useState(null);
     const [loading, setLoading] = useState(true);
+    
 
     useEffect(() => {
         const fetchInsights = async () => {
+            if (!fileId) return; // Early return if fileId is not defined
             try {
-                const response = await axios.get(`http://127.0.0.1:8000/api/view_csv_preview/${fileId}/`);
-                setInsights(response.data);
-                setLoading(false);
+                const response = await axios.get(`http://127.0.0.1:8000/api/files/${fileId}/insights/`);
+                setInsights(response.data.insights); // Adjusted to get insights from response
+                // Call get_predictions after insights are fetched
+                await get_predictions();
             } catch (error) {
                 console.error("Error fetching insights:", error);
+            } finally {
                 setLoading(false);
             }
         };
 
         fetchInsights();
     }, [fileId]);
+
+    // Function to get predictions based on the fileId
+    const get_predictions = async () => {
+        try {
+            const response = await axios.post(`http://127.0.0.1:8000/api/files/${fileId}/predictions/`, {
+                // You can pass additional data here if needed
+            });
+            setPredictions(response.data.predictions); // Adjust based on your API response structure
+        } catch (error) {
+            console.error("Error fetching predictions:", error);
+        }
+    };
 
     if (loading) {
         return <div className="text-center text-gray-300 dark:text-gray-500">Loading insights...</div>;
@@ -29,38 +49,22 @@ function DisplayInsights({ fileId }) {
     }
 
     return (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 transition-transform transform hover:scale-105">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 ">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">File Insights</h2>
-            <div className="mb-4">
-                <strong className="text-gray-800 dark:text-gray-300">Rows Removed:</strong> {insights.rows_removed}
-            </div>
-            <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <thead className="bg-gray-50 dark:bg-gray-700">
-                        <tr>
-                            {Object.keys(insights.data[0]).map((key) => (
-                                <th
-                                    key={key}
-                                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300"
-                                >
-                                    {key}
-                                </th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                        {insights.data.map((row, idx) => (
-                            <tr key={idx}>
-                                {Object.values(row).map((val, i) => (
-                                    <td key={i} className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
-                                        {val}
-                                    </td>
-                                ))}
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+            {/* Display each insight statistic */}
+            {Object.keys(insights).map((key) => (
+                <div key={key} className="mb-4">
+                    <strong className="text-gray-800 dark:text-gray-300">{key.charAt(0).toUpperCase() + key.slice(1)}:</strong>
+                    <pre className="text-gray-700 dark:text-gray-400">{JSON.stringify(insights[key], null, 2)}</pre>
+                </div>
+            ))}
+            {/* Display predictions if available */}
+            {predictions && (
+                <div className="mt-4">
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">Predictions</h3>
+                    <pre className="text-gray-700 dark:text-gray-400">{JSON.stringify(predictions, null, 2)}</pre>
+                </div>
+            )}
         </div>
     );
 }
