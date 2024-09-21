@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from "./Header";
 import Footer from "./Footer";
@@ -6,8 +6,6 @@ import ButtonGradient from "../assets/svg/ButtonGradient";
 import axios from 'axios';
 import './UploadFile.css';
 import TableauViz from './TableauViz';
-
-const AuthContext = createContext();
 
 function UploadFile() {
     const [filename, setFilename] = useState(null);
@@ -142,6 +140,18 @@ function UploadFile() {
             console.error('Logout failed:', error);
         }
     };
+    // Delete file from backend
+    const deleteFile = (fileId) => {
+        axios.delete(`${api}/files/${fileId}/`)
+            .then(() => {
+                setStatus('File Deleted Successfully');
+                getFiles(); // Refresh file list after deletion
+            })
+            .catch((error) => {
+                console.log('Error deleting file:', error);
+                setStatus('Error Deleting File');
+            });
+    };
 
     return (
         <div className="pt-[4.75rem] lg:pt-[5.25rem] overflow-hidden">
@@ -224,69 +234,72 @@ function UploadFile() {
                                             {status}
                                         </div>
                                     )}
-                                </form>
-                                <button
-                                    className="mt-6 bg-indigo-500 text-white px-6 py-3 rounded-full w-full hover:bg-indigo-600 transition-transform transform hover:scale-105 dark:bg-indigo-600 dark:hover:bg-indigo-700"
-                                    onClick={handleTableauRedirect}>
-                                    View Tableau Dashboard
-                                </button>
-                            </div>
+                            </form>
                         </div>
-                        {/* <div> */}
-                        {/* <div className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">DEMO </div>
-
-                            </div> */}
-                        <div className="col-span-2">
+                    </div>
+                    <div className="col-span-2">
                             <div className="bg-white shadow-lg rounded-lg p-8 dark:bg-gray-800">
                                 <h4 className="text-2xl font-semibold mb-4 dark:text-gray-100">Uploaded Datasets</h4>
                                 <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
                                     <thead className="bg-gray-100 dark:bg-gray-700">
-                                        <tr>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">
-                                                Dataset Title
-                                            </th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">
-                                                Download
-                                            </th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">
-                                                Preview
-                                            </th>
+                                    <tr>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">
+                                            Dataset Title
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">
+                                            Download
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">
+                                            Preview
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">
+                                            Delete
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800">
+                                    {files.map((file, index) => (
+                                        <tr key={index}>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
+                                                {file.csv.split('/').pop()}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                                                <button
+                                                    onClick={() => downloadWithAxios(file.csv, file.id)}
+                                                    className="bg-green-500 text-white px-4 py-2 rounded-full text-sm hover:bg-green-600 transition-transform transform hover:scale-105 dark:bg-green-600 dark:hover:bg-green-700"
+                                                >
+                                                    Download
+                                                </button>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                                                <button
+                                                    onClick={() => handlePreviewRedirect(file.id)}
+                                                    className="bg-blue-500 text-white px-4 py-2 rounded-full text-sm hover:bg-blue-600 transition-transform transform hover:scale-105 dark:bg-blue-600 dark:hover:bg-blue-700"
+                                                >
+                                                    Preview
+                                                </button>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                                                <button
+                                                    onClick={() => deleteFile(file.id)}
+                                                    className="bg-red-500 text-white px-4 py-2 rounded-full text-sm hover:bg-red-600 transition-transform transform hover:scale-105 dark:bg-red-600 dark:hover:bg-red-700"
+                                                >
+                                                    Delete
+                                                </button>
+                                            </td>
                                         </tr>
-                                    </thead>
-                                    <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800">
-                                        {files.map((file, index) => (
-                                            <tr key={index}>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
-                                                    {file.csv.split('/').pop()}
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                                                    <button
-                                                        onClick={() => downloadWithAxios(file.csv, file.id)}
-                                                        className="bg-green-500 text-white px-4 py-2 rounded-full text-sm hover:bg-green-600 transition-transform transform hover:scale-105 dark:bg-green-600 dark:hover:bg-green-700"
-                                                    >
-                                                        Download
-                                                    </button>
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                                                    <button
-                                                        onClick={() => handlePreviewRedirect(file.id)}
-                                                        className="bg-blue-500 text-white px-4 py-2 rounded-full text-sm hover:bg-blue-600 transition-transform transform hover:scale-105 dark:bg-blue-600 dark:hover:bg-blue-700"
-                                                    >
-                                                        View CSV Preview
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
+                                    ))}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                )}
+                </div>
+            )}
             </div>
             <Footer/>
             <ButtonGradient/>
         </div>
+        
     );
 }
 
