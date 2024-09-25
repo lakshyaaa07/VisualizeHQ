@@ -6,19 +6,25 @@ import ButtonGradient from "../assets/svg/ButtonGradient";
 import axios from 'axios';
 import './UploadFile.css';
 import TableauViz from './TableauViz';
-import DisplayInsights from './DisplayInsights';
+import { MdDelete } from "react-icons/md";
+import { FaDownload } from "react-icons/fa";
+import { MdPreview } from "react-icons/md";
+
+
 
 function UploadFile() {
     const [filename, setFilename] = useState(null);
     const [files, setFiles] = useState([]);
     const [status, setStatus] = useState('');
-    const [isDarkMode, setIsDarkMode] = useState(false);
     const navigate = useNavigate();
     const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('tokens'));
+    const [selectedAnalysisType, setSelectedAnalysisType] = useState('');
     const [user, setUser] = useState(null);
     const [tokens, setTokens] = useState(() => localStorage.getItem('tokens') ? JSON.parse(localStorage.getItem('tokens')) : null);
 
     const api = 'http://127.0.0.1:8000/api';
+
+    const analysisOptions = ['Summary Statistics', 'Trend Analysis', 'Correlation Matrix']; // Sample analysis types
 
     const saveFile = () => {
         if (!filename) return;
@@ -64,28 +70,10 @@ function UploadFile() {
         setTimeout(() => {
             document.body.classList.remove('transition-opacity');
         }, 300);
-
-        const darkMode = localStorage.getItem('darkMode') === 'true';
-        if (darkMode) {
-            document.body.classList.add('dark');
-            setIsDarkMode(true);
-        }
     }, []);
 
     const handleFilePreviewRedirect = (fileId) => {
         navigate(`/preview`, { state: { fileId } });
-    };
-
-    const toggleTheme = () => {
-        const newDarkMode = !isDarkMode;
-        setIsDarkMode(newDarkMode);
-        if (newDarkMode) {
-            document.body.classList.add('dark');
-            localStorage.setItem('darkMode', 'true');
-        } else {
-            document.body.classList.remove('dark');
-            localStorage.setItem('darkMode', 'false');
-        }
     };
 
     const downloadWithAxios = (url, title) => {
@@ -154,9 +142,12 @@ function UploadFile() {
             });
     };
 
-        // Handle preview and show insights for selected file
-    const handleInsightsRedirect = (fileId) => {
-        navigate(`/display-insights`, { state: { fileId } });
+
+        
+    const handleInsightsRedirect = (fileId, analysisType) => {
+        navigate('/display-insights', {
+            state: { fileId, analysisType }, // Pass fileId and selected analysis type
+        });
     };
 
 
@@ -166,25 +157,6 @@ function UploadFile() {
             <div className="container mx-auto p-6 transition-opacity duration-300 ease-in-out dark:bg-gray-900 dark:text-gray-100">
                 <div className="text-center mb-6">
                     <h2 className="text-3xl font-extrabold mb-4">Upload your Dataset</h2>
-                    {/* Dark Mode Toggle Button */}
-                    {/* Uncomment if needed */}
-                    {/* <button
-                        className="bg-gray-200 text-gray-800 px-6 py-3 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-300 transition-transform transform hover:scale-105 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600 dark:hover:bg-gray-600"
-                        id="themeToggle"
-                        onClick={toggleTheme}
-                    >
-                        {isDarkMode ? (
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M12 3v1M12 20v1M4.22 4.22l.707.707M17.07 17.07l.707.707M3 12h1M20 12h1M4.22 19.78l.707-.707M17.07 6.93l.707-.707" />
-                            </svg>
-                        ) : (
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <circle cx="12" cy="12" r="5" />
-                                <path d="M12 1v2M12 21v2M4.22 4.22l1.41 1.41M17.07 17.07l1.41 1.41M1 12h2M21 12h2M4.22 19.78l1.41-1.41M17.07 6.93l1.41-1.41" />
-                            </svg>
-                        )}
-                        {isDarkMode ? 'Light Mode' : 'Dark Mode'}
-                    </button> */}
                 </div>
                 <div className="text-center mb-4">
                     {!isLoggedIn ? (
@@ -205,7 +177,7 @@ function UploadFile() {
                     ) : (
                         <button
                             className="bg-red-500 text-white px-4 py-2 rounded mx-2 hover:bg-red-600"
-                            onClick={logout}
+                            onClick={()=> navigate('/logout')}
                         >
                             Logout
                         </button>
@@ -228,6 +200,22 @@ function UploadFile() {
                                             id="fileInput"
                                             className="border border-gray-300 rounded-md p-3 w-full bg-gray-50 file:border-gray-300 file:bg-gray-200 file:text-gray-700 file:py-2 file:px-4 file:rounded-md file:cursor-pointer dark:bg-gray-700 dark:border-gray-600 dark:file:border-gray-600 dark:file:bg-gray-800 dark:file:text-gray-300"
                                         />
+                                    </div>
+                                    <div className="mb-6">
+                                        <label htmlFor="analysisSelect" className="block text-gray-700 mb-2 text-sm font-medium dark:text-gray-300">
+                                            Select Analysis Type
+                                        </label>
+                                        <select
+                                            id="analysisSelect"
+                                            value={selectedAnalysisType}
+                                            onChange={(e) => setSelectedAnalysisType(e.target.value)}
+                                            className="border border-gray-300 rounded-md p-3 w-full bg-gray-50 dark:bg-gray-700 dark:border-gray-600"
+                                        >
+                                            <option value="">Select Analysis</option>
+                                            {analysisOptions.map((option, index) => (
+                                                <option key={index} value={option}>{option}</option>
+                                            ))}
+                                        </select>
                                     </div>
                                     <button
                                         type="button"
@@ -260,7 +248,7 @@ function UploadFile() {
                                             Preview
                                         </th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">
-                                                Insights
+                                            Insights
                                         </th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">
                                             Delete
@@ -278,7 +266,7 @@ function UploadFile() {
                                                     onClick={() => downloadWithAxios(file.csv, file.id)}
                                                     className="bg-green-500 text-white px-4 py-2 rounded-full text-sm hover:bg-green-600 transition-transform transform hover:scale-105 dark:bg-green-600 dark:hover:bg-green-700"
                                                 >
-                                                    Download
+                                                    <FaDownload />
                                                 </button>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
@@ -291,7 +279,7 @@ function UploadFile() {
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
                                                     <button
-                                                        onClick={() => handleInsightsRedirect(file.id)}
+                                                        onClick={() => handleInsightsRedirect(file.id, selectedAnalysisType)}
                                                         className="bg-green-500 text-white px-4 py-2 rounded-full text-sm hover:bg-green-600 transition-transform transform hover:scale-105 dark:bg-green-600 dark:hover:bg-green-700"
                                                     >
                                                         Insights
@@ -302,7 +290,7 @@ function UploadFile() {
                                                     onClick={() => deleteFile(file.id)}
                                                     className="bg-red-500 text-white px-4 py-2 rounded-full text-sm hover:bg-red-600 transition-transform transform hover:scale-105 dark:bg-red-600 dark:hover:bg-red-700"
                                                 >
-                                                    Delete
+                                                    <MdDelete />
                                                 </button>
                                             </td>
                                         </tr>

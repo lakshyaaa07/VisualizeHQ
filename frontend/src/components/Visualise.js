@@ -6,7 +6,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import ButtonGradient from "../assets/svg/ButtonGradient";
 import { CSSTransition } from 'react-transition-group';
-import Swal from 'sweetalert2'; // SweetAlert2 for better alert
+import Swal from 'sweetalert2';
 import './Visualise.css';
 
 import {
@@ -49,7 +49,7 @@ const chartTypes = {
 
 const Visualise = () => {
   const [chartData, setChartData] = useState(null);
-  const [chartType, setChartType] = useState('None'); // Default to 'None'
+  const [chartType, setChartType] = useState('None');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [inProp, setInProp] = useState(false);
@@ -103,7 +103,6 @@ const Visualise = () => {
       return;
     }
 
-    // Fetch the data again to generate the chart with selected columns
     axios
       .get(`${api}/view_csv_preview/${fileId}/`)
       .then((response) => {
@@ -126,7 +125,7 @@ const Visualise = () => {
             },
           ],
         });
-        
+
         setGenerateClicked(true);
         setInProp(false);
         setTimeout(() => {
@@ -142,39 +141,59 @@ const Visualise = () => {
     navigate('/');
   };
 
+  const goToDashboard = () => {
+    navigate('/dashboard', { state: { fileId } }); 
+  };
+  
+
+  const handleDownload = (type) => {
+    if (type === 'csv') {
+      window.location.href = `${api}/files/${fileId}/`; 
+    } else if (type === 'chart') {
+      const canvas = document.querySelector('canvas');
+      if (canvas) {
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL('image/png');
+        link.download = 'chart.png';
+        link.click();
+      } else {
+        Swal.fire('No chart available to download');
+      }
+    }
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
-  // Configure the chart options without dark mode logic
   const chartOptions = {
     responsive: true,
     plugins: {
       legend: {
         labels: {
-          color: '#333', // Legend text color
+          color: '#333',
         },
       },
       tooltip: {
-        backgroundColor: 'rgba(255,255,255,0.8)', // Tooltip background color
-        titleColor: '#333', // Tooltip title color
-        bodyColor: '#333', // Tooltip body color
+        backgroundColor: 'rgba(255,255,255,0.8)',
+        titleColor: '#333',
+        bodyColor: '#333',
       },
     },
     scales: {
       x: {
         ticks: {
-          color: '#333', // X-axis label color
+          color: '#333',
         },
         grid: {
-          color: 'rgba(0, 0, 0, 0.1)', // X-axis grid color
+          color: 'rgba(0, 0, 0, 0.1)',
         },
       },
       y: {
         ticks: {
-          color: '#333', // Y-axis label color
+          color: '#333',
         },
         grid: {
-          color: 'rgba(0, 0, 0, 0.1)', // Y-axis grid color
+          color: 'rgba(0, 0, 0, 0.1)',
         },
       },
     },
@@ -243,6 +262,18 @@ const Visualise = () => {
             >
               Generate
             </button>
+            <button 
+              className="download-button bg-green-500 text-white mt-2"
+              onClick={() => handleDownload('csv')}
+            >
+              Download CSV
+            </button>
+            <button 
+              className="download-button bg-red-500 text-white mt-2"
+              onClick={() => handleDownload('chart')}
+            >
+              Download Chart
+            </button>
           </div>
 
           <div className="chart-container lg:w-2/3 p-4">
@@ -250,22 +281,26 @@ const Visualise = () => {
               <div className="chart-wrapper">
                 {!chartData && !generateClicked ? (
                   <div className="text-center text-gray-500">
-                    Please select X and Y elements to analyze your data
+                    Please select columns and chart type to generate chart
                   </div>
                 ) : (
-                  chartData && <SelectedChart data={chartData} options={chartOptions} />
+                  <SelectedChart data={chartData} options={chartOptions} />
                 )}
               </div>
             </CSSTransition>
           </div>
         </div>
 
-        <button onClick={back} className="bg-info text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-transform transform hover:scale-105 mt-6">
-          Back to Home
-        </button>
+        <div className="button-group mt-8 lg:space-x-4">
+          <button onClick={back} className="back-button bg-gray-600 text-white">
+            Back to Home
+          </button>
+          <button onClick={goToDashboard} className="go-dashboard-button bg-purple-600 text-white">
+            Go to Dashboard
+          </button>
+        </div>
       </div>
       <Footer />
-      <ButtonGradient />
     </div>
   );
 };
