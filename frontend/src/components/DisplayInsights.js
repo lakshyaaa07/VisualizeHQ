@@ -102,6 +102,7 @@ import { useLocation } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import CodeBlock from './CodeBlock'; // Assuming CodeBlock is a component that handles code rendering
+import HypnoticLoader from './HypnoticLoader';
 
 function DisplayInsights() {
     const location = useLocation();
@@ -143,7 +144,7 @@ function DisplayInsights() {
     };
 
     if (loading) {
-        return <div className="text-center text-gray-300 dark:text-gray-500">Loading insights...</div>;
+        return <div className="text-center text-gray-300 dark:text-gray-500"><HypnoticLoader loadingText="Hold on, magic is happening..." /></div>;
     }
 
     if (!insights) {

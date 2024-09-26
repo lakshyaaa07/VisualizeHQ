@@ -88,6 +88,26 @@
   color: #fff; /* Button text color */
 }
 
+.download-button{
+  margin-top: 20px; /* Adjust margin to shift the button lower */
+  padding: 10px 20px; /* Ensure padding is sufficient for the button */
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+  background-color: #05fb4fc3; /* Light mode button background */
+  color: #fff; /* Button text color */
+}
+
+.download-button2{
+  margin-top: 20px; /* Adjust margin to shift the button lower */
+  padding: 10px 20px; /* Ensure padding is sufficient for the button */
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+  background-color: #fb0505c3; /* Light mode button background */
+  color: #fff; /* Button text color */
+}
+
 .dark .generate-button {
   background-color: #1d4ed8; /* Dark mode button background */
   color: #fff; /* Button text color in dark mode */

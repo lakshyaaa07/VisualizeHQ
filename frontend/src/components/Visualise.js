@@ -8,6 +8,7 @@ import ButtonGradient from "../assets/svg/ButtonGradient";
 import { CSSTransition } from 'react-transition-group';
 import Swal from 'sweetalert2';
 import './Visualise.css';
+import HypnoticLoader from './HypnoticLoader';
 
 import {
   Chart as ChartJS,
@@ -57,6 +58,7 @@ const Visualise = () => {
   const [yColumn, setYColumn] = useState('');
   const [columns, setColumns] = useState([]);
   const [generateClicked, setGenerateClicked] = useState(false);
+  const [generatingChart, setGeneratingChart] = useState(false);
 
   const location = useLocation();
   const { fileId } = location.state || {};
@@ -97,11 +99,17 @@ const Visualise = () => {
     }
   };
 
+  const handleTableauPageRedirect = () => {
+    navigate('/tableau-dashboards'); 
+  };
+
   const handleGenerate = () => {
     if (!xColumn || !yColumn || chartType === 'None') {
       Swal.fire('Please select all the fields and chart type');
       return;
     }
+
+    setGeneratingChart(true);
 
     axios
       .get(`${api}/view_csv_preview/${fileId}/`)
@@ -128,12 +136,14 @@ const Visualise = () => {
 
         setGenerateClicked(true);
         setInProp(false);
+        setGeneratingChart(false);
         setTimeout(() => {
           setInProp(true);
         }, 100);
       })
       .catch((error) => {
         Swal.fire('Error fetching data for chart');
+        setGeneratingChart(false);
       });
   };
 
@@ -162,7 +172,7 @@ const Visualise = () => {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div><HypnoticLoader loadingText="Hold on, data is fetching..." /></div>;
   if (error) return <div>Error: {error}</div>;
 
   const chartOptions = {
@@ -206,7 +216,7 @@ const Visualise = () => {
       <Header />
       <div className="visualise-container p-4 lg:flex lg:flex-col lg:items-center">
         <h2 className="text-3xl font-bold mb-6 text-center">CSV Data Visualization</h2>
-
+  
         <div className="lg:flex lg:space-x-6 lg:justify-between w-full">
           <div className="selection-container lg:w-1/3 p-4 border-2 border-gray-300 rounded-lg bg-white">
             <label htmlFor="xColumn" className="block mb-2">Select X-axis Column:</label>
@@ -224,7 +234,7 @@ const Visualise = () => {
                 </option>
               ))}
             </select>
-
+  
             <label htmlFor="yColumn" className="block mb-2">Select Y-axis Column:</label>
             <select
               id="yColumn"
@@ -240,7 +250,7 @@ const Visualise = () => {
                 </option>
               ))}
             </select>
-
+  
             <label htmlFor="chartType" className="block mb-2">Select Chart Type:</label>
             <select
               id="chartType"
@@ -255,54 +265,67 @@ const Visualise = () => {
                 </option>
               ))}
             </select>
-
+  
             <button 
-              className="generate-button bg-blue-500 text-white"
+              className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
               onClick={handleGenerate}
             >
               Generate
             </button>
             <button 
-              className="download-button bg-green-500 text-white mt-2"
+              className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
               onClick={() => handleDownload('csv')}
             >
               Download CSV
             </button>
             <button 
-              className="download-button bg-red-500 text-white mt-2"
+              className="text-gray-900 bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-lime-300 dark:focus:ring-lime-800 shadow-lg shadow-lime-500/50 dark:shadow-lg dark:shadow-lime-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
               onClick={() => handleDownload('chart')}
             >
               Download Chart
             </button>
           </div>
-
+  
           <div className="chart-container lg:w-2/3 p-4">
-            <CSSTransition in={generateClicked} timeout={300} classNames="fade" unmountOnExit>
-              <div className="chart-wrapper">
-                {!chartData && !generateClicked ? (
-                  <div className="text-center text-gray-500">
-                    Please select columns and chart type to generate chart
-                  </div>
-                ) : (
-                  <SelectedChart data={chartData} options={chartOptions} />
-                )}
+            {generatingChart ? (
+              <div className="flex justify-center items-center h-full">
+                <HypnoticLoader loadingText="Generating chart, please wait..." />
               </div>
-            </CSSTransition>
+            ) : (
+              <CSSTransition in={generateClicked} timeout={300} classNames="fade" unmountOnExit>
+                <div className="chart-wrapper">
+                  {!chartData ? (
+                    <div className="text-center text-gray-500">
+                      Please select columns and chart type to generate a chart
+                    </div>
+                  ) : (
+                    <SelectedChart data={chartData} options={chartOptions} />
+                  )}
+                </div>
+              </CSSTransition>
+            )}
           </div>
         </div>
-
+  
         <div className="button-group mt-8 lg:space-x-4">
-          <button onClick={back} className="back-button bg-gray-600 text-white">
+          <button onClick={back} className="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
             Back to Home
           </button>
-          <button onClick={goToDashboard} className="go-dashboard-button bg-purple-600 text-white">
+          <button onClick={goToDashboard} className="text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 shadow-lg shadow-teal-500/50 dark:shadow-lg dark:shadow-teal-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
             Go to Dashboard
+          </button>
+          <button
+            className="bg-indigo-500 text-white px-6 py-3 rounded-full w-full hover:bg-indigo-600 transition-transform transform hover:scale-105 dark:bg-indigo-600 dark:hover:bg-indigo-700"
+            onClick={handleTableauPageRedirect}
+          >
+            View Tableau Dashboard
           </button>
         </div>
       </div>
       <Footer />
     </div>
   );
+  
 };
 
 export default Visualise;

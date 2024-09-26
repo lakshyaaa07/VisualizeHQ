@@ -6,6 +6,7 @@ import Footer from "./Footer";
 import ButtonGradient from "../assets/svg/ButtonGradient";
 import CodeBlock from './CodeBlock'; // Import CodeBlock component
 import ReactMarkdown from 'react-markdown'; // Import ReactMarkdown
+import HypnoticLoader from './HypnoticLoader';
 
 const DisplayCSVData = () => {
     const [previewData, setPreviewData] = useState(null);
@@ -65,7 +66,7 @@ const DisplayCSVData = () => {
         }
     };
 
-    if (loading) return <div className="text-center text-gray-500 dark:text-gray-400">Loading...</div>;
+    if (loading) return <div className="text-center text-gray-500 dark:text-gray-400"><HypnoticLoader loadingText="Hold on, magic is happening..." /></div>;
     if (error) return <div className="text-center text-red-500 dark:text-red-400">Error: {error}</div>;
 
     return (

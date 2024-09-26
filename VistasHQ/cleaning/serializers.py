@@ -5,5 +5,5 @@ from .models import Files
 class FilesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Files
-        fields = ['id','csv']
+        fields = ['id','csv']   
         
