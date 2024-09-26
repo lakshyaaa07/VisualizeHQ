@@ -30,7 +30,7 @@ GEMINI_API_KEY = settings.GEMINI_API_KEY
 
 # Function to make requests to Gemini AI API
 def make_gemini_request(prompt):
-    generate_url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyChdBLEdwNWxfdjHdYlI92lsVjLrao_zaw"
+    generate_url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key={GEMINI_API_KEY}"
     headers = {
         "Content-Type": "application/json"
     }
