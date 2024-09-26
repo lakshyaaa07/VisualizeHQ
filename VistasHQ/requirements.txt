@@ -47,3 +47,4 @@ threadpoolctl==3.5.0
 tqdm==4.66.5
 tzdata==2022.7
 urllib3==2.2.3
+plotly
