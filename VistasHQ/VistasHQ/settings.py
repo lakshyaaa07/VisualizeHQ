@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 from datetime import timedelta
-import dj_database_url
+# import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-%k271nkc7^w%r8dy*s%p74q5%%wglkkzb27dfdkk&h9607w#z6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -99,7 +99,8 @@ WSGI_APPLICATION = 'VistasHQ.wsgi.application'
 
 DATABASES = {
     'default': {
-        'default': dj_database_url.config(default='postgresql://postgres:ymfiqMvroYxEgdEwzzIlQFnTIgzcngUY@autorack.proxy.rlwy.net:19395/railway')
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -153,9 +154,9 @@ MEDIA_URL = '/media/'
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-CORS_ALLOWED_ORIGINS = [
-    "https://vizora.vercel.app",
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "https://vizora.vercel.app",
+# ]
 
 
 REST_FRAMEWORK = {
