@@ -1,30 +1,45 @@
-import ButtonGradient from "./assets/svg/ButtonGradient";
-import Benefits from "./components/Benefits";
-import Collaboration from "./components/Collaboration";
-import Footer from "./components/Footer";
-import Header from "./components/Header";
-import Hero from "./components/Hero";
-import Pricing from "./components/Pricing";
-import Roadmap from "./components/Roadmap";
-// import Services from "./components/Services";
-
+import { useEffect, useState } from "react";
+import Header from "./sections/Header.js";
+import Hero from "./sections/Hero.js";
+import Features from "./sections/Features.js";
+import Pricing from "./sections/Pricing.js";
+import Faq from "./sections/Faq.js";
+import Testimonials from "./sections/Testimonials.js";
+import Download from "./sections/Download.js";
+import Footer from "./sections/Footer.js";
+import HypnoticLoader from "./components/HypnoticLoader.js"; // Adjust the import based on your folder structure
 
 const App = () => {
-  return (
-    <>
-      <div className="pt-[4.75rem] lg:pt-[5.25rem] overflow-hidden">
-        <Header />
-        <Hero />
-        <Benefits />
-        <Collaboration />
-        {/* <Services /> */}
-        <Pricing />
-        <Roadmap />
-        <Footer />
-      </div>
+  const [loading, setLoading] = useState(true);
 
-      <ButtonGradient />
-    </>
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000); // Loader will show for 2 seconds
+
+    return () => clearTimeout(timer); // Cleanup timer on unmount
+  }, []);
+
+  return (
+    <main className="overflow-hidden">
+      {loading ? (
+        <HypnoticLoader 
+          loadingText="Welcome to Vizora, where your data comes to life!" 
+          // glitch={true} // Set to true if you want the glitch effect
+        />
+      ) : (
+        <>
+          <Header />
+          <Hero />
+          <Features />
+          <Pricing />
+          <Faq />
+          <Testimonials />
+          <Download />
+          <Footer />
+        </>
+      )}
+    </main>
   );
 };
 

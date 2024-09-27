@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from "./Header";
-import Footer from "./Footer";
+import Header from '../sections/Header';
+import Footer from '../sections/Footer';
 import ButtonGradient from "../assets/svg/ButtonGradient";
 import axios from 'axios';
 import './UploadFile.css';
@@ -15,6 +15,7 @@ import { MdPreview } from "react-icons/md";
 function UploadFile() {
     const [filename, setFilename] = useState(null);
     const [files, setFiles] = useState([]);
+    const [username, setUsername] = useState(null);
     const [status, setStatus] = useState('');
     const navigate = useNavigate();
     const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('tokens'));
@@ -64,7 +65,21 @@ function UploadFile() {
         navigate('/tableau-viz');
     };
 
+    const getUsername = async () => {
+        try {
+            const response = await axios.get('/api/get-username/', {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+                }
+            });
+            setUsername(response.data.username);
+        } catch (error) {
+            console.error('Error fetching username:', error);
+        }
+    };
+
     useEffect(() => {
+        getUsername();
         getFiles();
         document.body.classList.add('transition-opacity');
         setTimeout(() => {
@@ -183,60 +198,61 @@ function UploadFile() {
                         </button>
                     )}
                 </div>
+    
                 {isLoggedIn && (
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div className="col-span-1">
-                            <div className="bg-white shadow-lg rounded-lg p-8 transition-transform transform hover:scale-105 dark:bg-gray-800 dark:text-gray-100">
-                                <h4 className="text-2xl font-semibold mb-4">CSV File Upload</h4>
-                                <form>
-                                    <div className="mb-6">
-                                        <label htmlFor="fileInput" className="block text-gray-700 mb-2 text-sm font-medium dark:text-gray-300">
-                                            Browse CSV File
-                                        </label>
-                                        <input
-                                            type="file"
-                                            accept=".csv, .xlsx"
-                                            onChange={(e) => setFilename(e.target.files[0])}
-                                            id="fileInput"
-                                            className="border border-gray-300 rounded-md p-3 w-full bg-gray-50 file:border-gray-300 file:bg-gray-200 file:text-gray-700 file:py-2 file:px-4 file:rounded-md file:cursor-pointer dark:bg-gray-700 dark:border-gray-600 dark:file:border-gray-600 dark:file:bg-gray-800 dark:file:text-gray-300"
-                                        />
-                                    </div>
-                                    <div className="mb-6">
-                                        <label htmlFor="analysisSelect" className="block text-gray-700 mb-2 text-sm font-medium dark:text-gray-300">
-                                            Select Analysis Type
-                                        </label>
-                                        <select
-                                            id="analysisSelect"
-                                            value={selectedAnalysisType}
-                                            onChange={(e) => setSelectedAnalysisType(e.target.value)}
-                                            className="border border-gray-300 rounded-md p-3 w-full bg-gray-50 dark:bg-gray-700 dark:border-gray-600"
-                                        >
-                                            <option value="">Select Analysis</option>
-                                            {analysisOptions.map((option, index) => (
-                                                <option key={index} value={option}>{option}</option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                    <button
-                                        type="button"
-                                        onClick={saveFile}
-                                        className="bg-blue-500 text-white px-6 py-3 rounded-full w-full hover:bg-blue-600 transition-transform transform hover:scale-105 dark:bg-blue-600 dark:hover:bg-blue-700"
+                    <div className="flex flex-col items-center space-y-6">
+                        {/* CSV File Upload Section */}
+                        <div className="w-full max-w-lg bg-white shadow-lg rounded-lg p-8 dark:bg-gray-800 dark:text-gray-100">
+                            <h4 className="text-2xl font-semibold mb-4">CSV File Upload</h4>
+                            <form>
+                                <div className="mb-6">
+                                    <label htmlFor="fileInput" className="block text-gray-700 mb-2 text-sm font-medium dark:text-gray-300">
+                                        Browse CSV File
+                                    </label>
+                                    <input
+                                        type="file"
+                                        accept=".csv, .xlsx"
+                                        onChange={(e) => setFilename(e.target.files[0])}
+                                        id="fileInput"
+                                        className="border border-gray-300 rounded-md p-3 w-full bg-gray-50 file:border-gray-300 file:bg-gray-200 file:text-gray-700 file:py-2 file:px-4 file:rounded-md file:cursor-pointer dark:bg-gray-700 dark:border-gray-600 dark:file:border-gray-600 dark:file:bg-gray-800 dark:file:text-gray-300"
+                                    />
+                                </div>
+                                <div className="mb-6">
+                                    <label htmlFor="analysisSelect" className="block text-gray-700 mb-2 text-sm font-medium dark:text-gray-300">
+                                        Select Analysis Type
+                                    </label>
+                                    <select
+                                        id="analysisSelect"
+                                        value={selectedAnalysisType}
+                                        onChange={(e) => setSelectedAnalysisType(e.target.value)}
+                                        className="border border-gray-300 rounded-md p-3 w-full bg-gray-50 dark:bg-gray-700 dark:border-gray-600"
                                     >
-                                        Submit
-                                    </button>
-                                    {status && (
-                                        <div className="bg-blue-100 text-blue-800 border border-blue-300 p-4 mt-4 rounded-lg dark:bg-blue-700 dark:text-blue-200 dark:border-blue-600">
-                                            {status}
-                                        </div>
-                                    )}
+                                        <option value="">Select Analysis</option>
+                                        {analysisOptions.map((option, index) => (
+                                            <option key={index} value={option}>{option}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={saveFile}
+                                    className="bg-blue-500 text-white px-6 py-3 rounded-full w-full hover:bg-blue-600 transition-transform transform hover:scale-105 dark:bg-blue-600 dark:hover:bg-blue-700"
+                                >
+                                    Submit
+                                </button>
+                                {status && (
+                                    <div className="bg-blue-100 text-blue-800 border border-blue-300 p-4 mt-4 rounded-lg dark:bg-blue-700 dark:text-blue-200 dark:border-blue-600">
+                                        {status}
+                                    </div>
+                                )}
                             </form>
                         </div>
-                    </div>
-                    <div className="col-span-2">
-                            <div className="bg-white shadow-lg rounded-lg p-8 dark:bg-gray-800">
-                                <h4 className="text-2xl font-semibold mb-4 dark:text-gray-100">Uploaded Datasets</h4>
-                                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
-                                    <thead className="bg-gray-100 dark:bg-gray-700">
+    
+                        {/* Uploaded Datasets Section */}
+                        <div className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-8 dark:bg-gray-800">
+                            <h4 className="text-2xl font-semibold mb-4 dark:text-gray-100">Uploaded Datasets</h4>
+                            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
+                                <thead className="bg-gray-100 dark:bg-gray-700">
                                     <tr>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">
                                             Dataset Title
@@ -278,12 +294,12 @@ function UploadFile() {
                                                 </button>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                                                    <button
-                                                        onClick={() => handleInsightsRedirect(file.id, selectedAnalysisType)}
-                                                        className="bg-green-500 text-white px-4 py-2 rounded-full text-sm hover:bg-green-600 transition-transform transform hover:scale-105 dark:bg-green-600 dark:hover:bg-green-700"
-                                                    >
-                                                        Insights
-                                                    </button>
+                                                <button
+                                                    onClick={() => handleInsightsRedirect(file.id, selectedAnalysisType)}
+                                                    className="bg-green-500 text-white px-4 py-2 rounded-full text-sm hover:bg-green-600 transition-transform transform hover:scale-105 dark:bg-green-600 dark:hover:bg-green-700"
+                                                >
+                                                    Insights
+                                                </button>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
                                                 <button
@@ -299,16 +315,12 @@ function UploadFile() {
                             </table>
                         </div>
                     </div>
-                </div>
-            )}
-
-            {/* {selectedFileId && <DisplayInsights fileId={selectedFileId} />} */}
+                )}
             </div>
             <Footer/>
-            <ButtonGradient/>
         </div>
-        
     );
+    
 }
 
 export default UploadFile;

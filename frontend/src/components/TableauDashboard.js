@@ -6,8 +6,8 @@ import TableauViz2 from './TableauViz2';
 import TableauViz3 from './TableauViz3';
 import TableauViz4 from './TableauViz4';
 import TableauViz5 from './TableauViz5';
-import Navbar from './Header' 
-import Footer from './Footer';
+import Navbar from '../sections/Header' 
+import Footer from '../sections/Footer';
 
 const TableauDashboards = () => {
   const navigate = useNavigate();

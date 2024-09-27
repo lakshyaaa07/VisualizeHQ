@@ -1,9 +1,5 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-# Create your views here.
-# def home(request):
-#     return HttpResponse(request,"Hii")
-# views.py
 from django.contrib.auth.models import User
 from rest_framework.response import Response
 from rest_framework import status
@@ -40,11 +36,17 @@ def login(request):
 # User logout
 @api_view(['POST'])
 def logout(request):
-    # This just demonstrates how you could handle logout by blacklisting tokens, 
-    # but it's not mandatory for JWT.
     try:
         token = RefreshToken(request.data["refresh"])
         token.blacklist()
         return Response({'message': 'Logged out successfully'}, status=status.HTTP_205_RESET_CONTENT)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+# Fetch logged-in user's username
+@api_view(['GET'])
+def get_username(request):
+    if request.user.is_authenticated:
+        return Response({'username': request.user.username}, status=status.HTTP_200_OK)
+    else:
+        return Response({'error': 'User not authenticated'}, status=status.HTTP_401_UNAUTHORIZED)

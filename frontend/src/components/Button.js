@@ -1,26 +1,57 @@
-import ButtonSvg from "../assets/svg/ButtonSvg";
+import clsx from "clsx";
+import { Marker } from "./Marker.js";
 
-const Button = ({ className, href, onClick, children, px, white }) => {
-  const classes = `button relative inline-flex items-center justify-center h-11 transition-colors hover:text-color-1 ${
-    px || "px-7"
-  } ${white ? "text-n-8" : "text-n-1"} ${className || ""}`;
-  const spanClasses = "relative z-10";
+const Button = ({
+  icon,
+  children,
+  href,
+  containerClassName,
+  onClick,
+  markerFill,
+}) => {
+  const Inner = () => (
+    <>
+      <span className="relative flex items-center min-h-[60px] px-4 g4 rounded-2xl inner-before group-hover:before:opacity-100 overflow-hidden">
+        <span className="absolute -left-[1px]">
+          <Marker markerFill={markerFill} />
+        </span>
 
-  const renderButton = () => (
-    <button className={classes} onClick={onClick}>
-      <span className={spanClasses}>{children}</span>
-      {ButtonSvg(white)}
+        {icon && (
+          <img
+            src={icon}
+            alt="circle"
+            className="size-10 mr-5 object-contain z-10"
+          />
+        )}
+
+        <span className="relative z-2 font-poppins base-bold text-p1 uppercase">
+          {children}
+        </span>
+      </span>
+
+      <span className="glow-before glow-after" />
+    </>
+  );
+  return href ? (
+    <a
+      className={clsx(
+        "relative p-0.5 g5 rounded-2xl shadow-500 group",
+        containerClassName,
+      )}
+      href={href}
+    >
+      <Inner />
+    </a>
+  ) : (
+    <button
+      className={clsx(
+        "relative p-0.5 g5 rounded-2xl shadow-500 group",
+        containerClassName,
+      )}
+      onClick={onClick}
+    >
+      <Inner />
     </button>
   );
-
-  const renderLink = () => (
-    <a href={href} className={classes}>
-      <span className={spanClasses}>{children}</span>
-      {ButtonSvg(white)}
-    </a>
-  );
-
-  return href ? renderLink() : renderButton();
 };
-
 export default Button;

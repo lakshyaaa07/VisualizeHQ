@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Header from "./Header";
-import Footer from "./Footer";
+import Header from '../sections/Header';
+import Footer from '../sections/Footer';
 import ButtonGradient from "../assets/svg/ButtonGradient";
 import CodeBlock from './CodeBlock'; // Import CodeBlock component
 import ReactMarkdown from 'react-markdown'; // Import ReactMarkdown
