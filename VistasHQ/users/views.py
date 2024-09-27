@@ -45,8 +45,8 @@ def logout(request):
 
 # Fetch logged-in user's username
 @api_view(['GET'])
-def get_username(request):
+def         get_username(request):
     if request.user.is_authenticated:
         return Response({'username': request.user.username}, status=status.HTTP_200_OK)
-    else:
-        return Response({'error': 'User not authenticated'}, status=status.HTTP_401_UNAUTHORIZED)
+    return Response({'error': 'User not authenticated'}, status=status.HTTP_401_UNAUTHORIZED)
+

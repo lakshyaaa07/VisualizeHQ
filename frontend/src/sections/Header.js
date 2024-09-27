@@ -13,16 +13,19 @@ const Header = () => {
 
   const getUsername = async () => {
     try {
-      const response = await axios.get('/api/get-username/', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
-        }
-      });
-      setUsername(response.data.username);
+        const response = await axios.get('/api/get-username/', {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+            },
+        });
+        console.log(response.data); // Log the response
+        setUsername(response.data.username);
+        setIsLoggedIn(true); // Set user logged in state
     } catch (error) {
-      console.error('Error fetching username:', error);
+        console.error('Error fetching username:', error);
+        setIsLoggedIn(false); // Set user logged out state if there is an error
     }
-  };
+};
 
   useEffect(() => {
     getUsername();
@@ -56,10 +59,10 @@ const Header = () => {
   const handleTryNowClick = () => {
     if (isLoggedIn) {
       // Redirect to the upload page if the user is logged in
-      navigate("/upload");
+      navigate("/");
     } else {
       // Redirect to the signup page if the user is not logged in
-      navigate("/signup");
+      navigate("/");
     }
   };
 
@@ -127,7 +130,7 @@ const Header = () => {
                     onClick={handleTryNowClick}
                     className="base-bold text-p4 uppercase transition-colors duration-500 cursor-pointer hover:text-p1 max-lg:my-4 max-lg:h5"
                   >
-                    {isLoggedIn ? `Logout, ${username}` : "TRY NOW"}
+                    {isLoggedIn ? `Logout, ${username}` : "CONTACT"}  
                   </button>
                 </li>
               </ul>

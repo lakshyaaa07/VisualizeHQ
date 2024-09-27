@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../sections/Header';
 import Footer from '../sections/Footer';
-import ButtonGradient from "../assets/svg/ButtonGradient";
 import axios from 'axios';
 import './UploadFile.css';
-import TableauViz from './TableauViz';
 import { MdDelete } from "react-icons/md";
 import { FaDownload } from "react-icons/fa";
-import { MdPreview } from "react-icons/md";
+import CTA_Upload from './CTA_Upload';
+import { TbReportAnalytics } from "react-icons/tb";
+import { HiTableCells } from "react-icons/hi2";
+import { IoLogOut } from "react-icons/io5";
 
 
 
@@ -168,22 +169,19 @@ function UploadFile() {
 
     return (
         <div className="pt-[4.75rem] lg:pt-[5.25rem] overflow-hidden">
-            <Header/>
-            <div className="container mx-auto p-6 transition-opacity duration-300 ease-in-out dark:bg-gray-900 dark:text-gray-100">
-                <div className="text-center mb-6">
-                    <h2 className="text-3xl font-extrabold mb-4">Upload your Dataset</h2>
-                </div>
+            <Header />
+            <div className="container mx-auto p-6 transition-opacity duration-300 ease-in-out bg-gray-900 text-gray-100">
                 <div className="text-center mb-4">
                     {!isLoggedIn ? (
                         <>
                             <button
-                                className="bg-blue-500 text-white px-4 py-2 rounded mx-2 hover:bg-blue-600"
+                                className="bg-teal-500 text-white px-4 py-2 rounded mx-2 hover:bg-teal-600"
                                 onClick={() => navigate('/login')}
                             >
                                 Login
                             </button>
                             <button
-                                className="bg-gray-500 text-white px-4 py-2 rounded mx-2 hover:bg-gray-600"
+                                className="bg-orange-500 text-white px-4 py-2 rounded mx-2 hover:bg-orange-600"
                                 onClick={() => navigate('/signup')}
                             >
                                 Signup
@@ -192,135 +190,140 @@ function UploadFile() {
                     ) : (
                         <button
                             className="bg-red-500 text-white px-4 py-2 rounded mx-2 hover:bg-red-600"
-                            onClick={()=> navigate('/logout')}
+                            onClick={() => navigate('/logout')}
                         >
-                            Logout
+                            <IoLogOut className='h-7 w-7'/>
                         </button>
                     )}
+                </div>
+                <div className="text-center mb-6">
+                    <h2 className="text-3xl font-extrabold mb-4">Upload your Dataset</h2>
                 </div>
     
                 {isLoggedIn && (
                     <div className="flex flex-col items-center space-y-6">
-                        {/* CSV File Upload Section */}
-                        <div className="w-full max-w-lg bg-white shadow-lg rounded-lg p-8 dark:bg-gray-800 dark:text-gray-100">
-                            <h4 className="text-2xl font-semibold mb-4">CSV File Upload</h4>
-                            <form>
+                        {/* Flex Container for CSV Upload and Analysis Select */}
+                        <div className="flex justify-between w-full max-w-4xl space-x-4">
+                            {/* CSV File Upload Section */}
+                            <div className="w-full max-w-md bg-gray-800 shadow-lg rounded-lg p-8">
+                                <h4 className="text-2xl font-semibold mb-4">CSV File Upload</h4>
+                                <form>
+                                    <div className="mb-6">
+                                        <label htmlFor="fileInput" className="block text-gray-300 mb-2 text-sm font-medium">
+                                            Browse CSV File
+                                        </label>
+                                        <input
+                                            type="file"
+                                            accept=".csv, .xlsx"
+                                            onChange={(e) => setFilename(e.target.files[0])}
+                                            id="fileInput"
+                                            className="border border-gray-300 rounded-md p-3 w-full bg-gray-50 file:border-gray-300 file:bg-gray-200 file:text-gray-700 file:py-2 file:px-4 file:rounded-md file:cursor-pointer dark:bg-gray-700 dark:border-gray-600 dark:file:border-gray-600 dark:file:bg-gray-800 dark:file:text-gray-300"
+                                        />
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={saveFile}
+                                        className="bg-teal-500 text-white px-6 py-3 rounded-full w-full hover:bg-teal-600 transition-transform transform hover:scale-105"
+                                    >
+                                        Submit
+                                    </button>
+                                    {status && (
+                                        <div className="bg-teal-100 text-teal-800 border border-teal-300 p-4 mt-4 rounded-lg">
+                                            {status}
+                                        </div>
+                                    )}
+                                </form>
+                            </div>
+    
+                            {/* Analysis Type Section */}
+                            <div className="w-full max-w-md bg-gray-800 shadow-lg rounded-lg p-8">
+                                <h4 className="text-2xl font-semibold mb-4">Select Analysis Type</h4>
                                 <div className="mb-6">
-                                    <label htmlFor="fileInput" className="block text-gray-700 mb-2 text-sm font-medium dark:text-gray-300">
-                                        Browse CSV File
-                                    </label>
-                                    <input
-                                        type="file"
-                                        accept=".csv, .xlsx"
-                                        onChange={(e) => setFilename(e.target.files[0])}
-                                        id="fileInput"
-                                        className="border border-gray-300 rounded-md p-3 w-full bg-gray-50 file:border-gray-300 file:bg-gray-200 file:text-gray-700 file:py-2 file:px-4 file:rounded-md file:cursor-pointer dark:bg-gray-700 dark:border-gray-600 dark:file:border-gray-600 dark:file:bg-gray-800 dark:file:text-gray-300"
-                                    />
-                                </div>
-                                <div className="mb-6">
-                                    <label htmlFor="analysisSelect" className="block text-gray-700 mb-2 text-sm font-medium dark:text-gray-300">
+                                    <label htmlFor="analysisSelect" className="block text-gray-300 mb-2 text-sm font-medium">
                                         Select Analysis Type
                                     </label>
                                     <select
                                         id="analysisSelect"
                                         value={selectedAnalysisType}
                                         onChange={(e) => setSelectedAnalysisType(e.target.value)}
-                                        className="border border-gray-300 rounded-md p-3 w-full bg-gray-50 dark:bg-gray-700 dark:border-gray-600"
+                                        className="border border-gray-600 rounded-md p-3 w-full bg-gray-700 text-gray-300"
                                     >
                                         <option value="">Select Analysis</option>
                                         {analysisOptions.map((option, index) => (
-                                            <option key={index} value={option}>{option}</option>
+                                            <option key={index} value={option}>
+                                                {option}
+                                            </option>
                                         ))}
                                     </select>
                                 </div>
-                                <button
-                                    type="button"
-                                    onClick={saveFile}
-                                    className="bg-blue-500 text-white px-6 py-3 rounded-full w-full hover:bg-blue-600 transition-transform transform hover:scale-105 dark:bg-blue-600 dark:hover:bg-blue-700"
-                                >
-                                    Submit
-                                </button>
-                                {status && (
-                                    <div className="bg-blue-100 text-blue-800 border border-blue-300 p-4 mt-4 rounded-lg dark:bg-blue-700 dark:text-blue-200 dark:border-blue-600">
-                                        {status}
-                                    </div>
-                                )}
-                            </form>
+                            </div>
                         </div>
     
                         {/* Uploaded Datasets Section */}
-                        <div className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-8 dark:bg-gray-800">
-                            <h4 className="text-2xl font-semibold mb-4 dark:text-gray-100">Uploaded Datasets</h4>
-                            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
-                                <thead className="bg-gray-100 dark:bg-gray-700">
-                                    <tr>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">
-                                            Dataset Title
-                                        </th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">
-                                            Download
-                                        </th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">
-                                            Preview
-                                        </th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">
-                                            Insights
-                                        </th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">
-                                            Delete
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800">
-                                    {files.map((file, index) => (
-                                        <tr key={index}>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
-                                                {file.csv.split('/').pop()}
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                                                <button
-                                                    onClick={() => downloadWithAxios(file.csv, file.id)}
-                                                    className="bg-green-500 text-white px-4 py-2 rounded-full text-sm hover:bg-green-600 transition-transform transform hover:scale-105 dark:bg-green-600 dark:hover:bg-green-700"
-                                                >
-                                                    <FaDownload />
-                                                </button>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                                                <button
-                                                    onClick={() => handleFilePreviewRedirect(file.id)}
-                                                    className="bg-blue-500 text-white px-4 py-2 rounded-full text-sm hover:bg-blue-600 transition-transform transform hover:scale-105 dark:bg-blue-600 dark:hover:bg-blue-700"
-                                                >
-                                                    Preview
-                                                </button>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                                                <button
-                                                    onClick={() => handleInsightsRedirect(file.id, selectedAnalysisType)}
-                                                    className="bg-green-500 text-white px-4 py-2 rounded-full text-sm hover:bg-green-600 transition-transform transform hover:scale-105 dark:bg-green-600 dark:hover:bg-green-700"
-                                                >
-                                                    Insights
-                                                </button>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                                                <button
-                                                    onClick={() => deleteFile(file.id)}
-                                                    className="bg-red-500 text-white px-4 py-2 rounded-full text-sm hover:bg-red-600 transition-transform transform hover:scale-105 dark:bg-red-600 dark:hover:bg-red-700"
-                                                >
-                                                    <MdDelete />
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
+                        <div className="w-full max-w-4xl bg-gray-800 shadow-lg rounded-lg p-8 mx-auto">
+    <h4 className="text-2xl font-semibold mb-4 text-white text-center">Uploaded Datasets</h4>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {files.map((file, index) => (
+            <div 
+                key={index} 
+                className="bg-gray-700 rounded-lg p-6 shadow-md flex flex-col justify-between space-y-4 transform transition duration-300 hover:scale-105 hover:shadow-lg"
+            >
+                {/* CSV title with wrapping */}
+                <h5 className="text-lg font-bold text-gray-100 mb-4 break-words text-center">
+                    {file.csv.split('/').pop()}
+                </h5>
+
+                {/* Buttons Container */}
+                <div className="grid grid-cols-2 gap-4">
+                    {/* Download Button */}
+                    <button
+                        onClick={() => downloadWithAxios(file.csv, file.id)}
+                        className="flex items-center justify-center bg-green-500 text-white p-2 rounded-full shadow hover:bg-green-600 transition-transform transform hover:scale-105"
+                        title="Download CSV"
+                    >
+                        <FaDownload className="w-5 h-5" />
+                    </button>
+
+                    {/* Preview Button */}
+                    <button
+                        onClick={() => handleFilePreviewRedirect(file.id)}
+                        className="flex items-center justify-center bg-teal-500 text-white p-2 rounded-full shadow hover:bg-teal-600 transition-transform transform hover:scale-105"
+                        title="Preview"
+                    >
+                        <HiTableCells className="w-5 h-5" />
+                    </button>
+
+                    {/* Insights Button */}
+                    <button
+                        onClick={() => handleInsightsRedirect(file.id, selectedAnalysisType)}
+                        className="flex items-center justify-center bg-blue-500 text-white p-2 rounded-full shadow hover:bg-blue-600 transition-transform transform hover:scale-105"
+                        title="Generate Insights"
+                    >
+                        <TbReportAnalytics className="w-5 h-5" />
+                    </button>
+
+                    {/* Delete Button */}
+                    <button
+                        onClick={() => deleteFile(file.id)}
+                        className="flex items-center justify-center bg-red-500 text-white p-2 rounded-full shadow hover:bg-red-600 transition-transform transform hover:scale-105"
+                        title="Delete File"
+                    >
+                        <MdDelete className="w-5 h-5" />
+                    </button>
+                </div>
+            </div>
+        ))}
+    </div>
+</div>
+
                     </div>
                 )}
             </div>
-            <Footer/>
+            <CTA_Upload />
+            <Footer />
         </div>
     );
     
-}
+}    
 
 export default UploadFile;

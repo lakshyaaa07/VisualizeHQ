@@ -98,14 +98,17 @@
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import CodeBlock from './CodeBlock'; // Assuming CodeBlock is a component that handles code rendering
+import CodeBlock from './CodeBlock'; 
 import HypnoticLoader from './HypnoticLoader';
+import { FaClipboard, FaDownload } from 'react-icons/fa'; // Importing icons
+import { SiGooglegemini } from "react-icons/si";
 
 function DisplayInsights() {
     const location = useLocation();
+    const navigate = useNavigate();
     const { fileId } = location.state || {}; // Accessing fileId from location.state
     const [insights, setInsights] = useState(null);
     const [aiInsights, setAIInsights] = useState(null); // New state for AI insights
@@ -140,6 +143,34 @@ function DisplayInsights() {
             setPredictions(response.data.predictions); // Adjust based on your API response structure
         } catch (error) {
             console.error("Error fetching predictions:", error);
+        }
+    };
+
+    // Function to copy AI insights to clipboard
+    const copyToClipboard = () => {
+        if (aiInsights) {
+            navigator.clipboard.writeText(aiInsights)
+                .then(() => {
+                    alert('AI Insights copied to clipboard!');
+                })
+                .catch(err => {
+                    console.error('Failed to copy: ', err);
+                });
+        }
+    };
+
+    // Function to download AI insights as a .txt file
+    const downloadReport = () => {
+        if (aiInsights) {
+            const blob = new Blob([aiInsights], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'ai_insights.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url); // Clean up the URL object
         }
     };
 
@@ -189,9 +220,29 @@ function DisplayInsights() {
             {/* Render insights as a table */}
             {renderTable()}
 
-            {/* New div with black background and white text for AI insights */}
-            <div className="bg-black text-white rounded-lg p-6 mt-6 w-full md:w-3/4 lg:w-1/2">
-                <h3 className="text-xl font-bold">AI Insights</h3>
+            {/* New div with enhanced styling for AI insights */}
+            <div className="bg-gradient-to-r from-purple-700 via-indigo-600 to-blue-600 text-white rounded-lg p-6 mt-6 w-full md:w-3/4 lg:w-1/2 shadow-lg">
+                <div className="flex justify-between items-center">
+                    <h3 className="text-4xl font-bold flex items-center mb-4">
+                    <SiGooglegemini className="mr-2" /> {/* Space between icon and text */}
+                    AI Insights
+                    </h3>
+                    
+                    <div className="flex space-x-2">
+                        <button 
+                            onClick={copyToClipboard}
+                            className="bg-teal-500 text-white rounded-lg px-2 py-1 flex items-center hover:bg-teal-600 transition duration-200"
+                        >
+                            <FaClipboard className="mr-1" /> Copy
+                        </button>
+                        <button 
+                            onClick={downloadReport}
+                            className="bg-blue-500 text-white rounded-lg px-2 py-1 flex items-center hover:bg-blue-600 transition duration-200"
+                        >
+                            <FaDownload className="mr-1" /> Download
+                        </button>
+                    </div>
+                </div>
                 {aiInsights ? (
                     <ReactMarkdown 
                         children={aiInsights} 
@@ -207,6 +258,24 @@ function DisplayInsights() {
                 ) : (
                     <p>No AI insights available</p>
                 )}
+            </div>
+
+            {/* Navigation Buttons */}
+            <div className="flex justify-center mt-6 space-x-4">
+                <button
+                    type="button"
+                    className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-200"
+                    onClick={() => window.history.back()} // Navigates back
+                >
+                    Back
+                </button>
+                <button
+                    type="button"
+                    className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200"
+                    onClick={() => navigate('/')} // Navigate to home
+                >
+                    Go to Home
+                </button>
             </div>
 
             {/* Display predictions if available */}

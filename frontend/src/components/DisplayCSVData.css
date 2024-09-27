@@ -1,0 +1,22 @@
+/* Custom Scrollbar Styles */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #2d3748; /* Gray-700 for dark mode */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #4a5568; /* Gray-600 for dark mode */
+    border-radius: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #718096; /* Gray-500 for hover effect */
+}
+
+.custom-scrollbar::-webkit-scrollbar-corner {
+    background: #2d3748; /* Matching corner background */
+}

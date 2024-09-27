@@ -213,10 +213,17 @@ const Visualise = () => {
   return (
     <div className="pt-[4.75rem] lg:pt-[5.25rem] overflow-hidden">
       <Header />
+      <div className="pt-[1.75rem] lg:pt-[2.25rem] overflow-hidden"></div>
+      {/* Container for all content */}
       <div className="visualise-container p-4 lg:flex lg:flex-col lg:items-center">
+        
+        {/* Title */}
         <h2 className="text-3xl font-bold mb-6 text-center">CSV Data Visualization</h2>
-  
+
+        {/* Form and Chart Section */}
         <div className="lg:flex lg:space-x-6 lg:justify-between w-full">
+          
+          {/* Form Container */}
           <div className="selection-container lg:w-1/3 p-4 border-2 border-gray-300 rounded-lg bg-white">
             <label htmlFor="xColumn" className="block mb-2">Select X-axis Column:</label>
             <select
@@ -233,7 +240,7 @@ const Visualise = () => {
                 </option>
               ))}
             </select>
-  
+
             <label htmlFor="yColumn" className="block mb-2">Select Y-axis Column:</label>
             <select
               id="yColumn"
@@ -249,7 +256,7 @@ const Visualise = () => {
                 </option>
               ))}
             </select>
-  
+
             <label htmlFor="chartType" className="block mb-2">Select Chart Type:</label>
             <select
               id="chartType"
@@ -264,27 +271,29 @@ const Visualise = () => {
                 </option>
               ))}
             </select>
-  
-            <button 
-              className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+
+            {/* Buttons for generating and downloading CSV and charts */}
+            <button
+              className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg font-medium rounded-lg text-sm px-5 py-2.5 mb-2 w-full"
               onClick={handleGenerate}
             >
               Generate
             </button>
-            <button 
-              className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+            <button
+              className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg font-medium rounded-lg text-sm px-5 py-2.5 mb-2 w-full"
               onClick={() => handleDownload('csv')}
             >
               Download CSV
             </button>
-            <button 
-              className="text-gray-900 bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-lime-300 dark:focus:ring-lime-800 shadow-lg shadow-lime-500/50 dark:shadow-lg dark:shadow-lime-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+            <button
+              className="text-gray-900 bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-lime-300 dark:focus:ring-lime-800 shadow-lg font-medium rounded-lg text-sm px-5 py-2.5 mb-2 w-full"
               onClick={() => handleDownload('chart')}
             >
               Download Chart
             </button>
           </div>
-  
+
+          {/* Chart Container */}
           <div className="chart-container lg:w-2/3 p-4">
             {generatingChart ? (
               <div className="flex justify-center items-center h-full">
@@ -305,12 +314,19 @@ const Visualise = () => {
             )}
           </div>
         </div>
-  
-        <div className="button-group mt-8 lg:space-x-4">
-          <button onClick={back} className="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+
+        {/* Button Section */}
+        <div className="button-group mt-8 lg:space-x-4 flex justify-center">
+          <button
+            onClick={back}
+            className="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg font-medium rounded-lg text-sm px-5 py-2.5 mb-2"
+          >
             Back to Home
           </button>
-          <button onClick={goToDashboard} className="text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 shadow-lg shadow-teal-500/50 dark:shadow-lg dark:shadow-teal-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+          <button
+            onClick={goToDashboard}
+            className="text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 shadow-lg font-medium rounded-lg text-sm px-5 py-2.5 mb-2"
+          >
             Go to Dashboard
           </button>
           <button
@@ -321,8 +337,10 @@ const Visualise = () => {
           </button>
         </div>
       </div>
+
       <Footer />
     </div>
+
   );
   
 };
