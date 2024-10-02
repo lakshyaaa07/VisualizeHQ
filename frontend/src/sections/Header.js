@@ -1,15 +1,17 @@
 import { Link as LinkScroll } from "react-scroll";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import clsx from "clsx";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import AuthContext from "../components/AuthContext";
 
 const Header = () => {
   const [hasScrolled, setHasScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // State for user login status
-  const [username, setUsername] = useState(""); // State for storing the username
+  // const [isLoggedIn, setIsLoggedIn] = useState(false); // State for user login status
+  // const [username, setUsername] = useState(""); // State for storing the username
   const navigate = useNavigate();
+  const {isLoggedIn,user,logout}=useContext(AuthContext)
 
   const getUsername = async () => {
     try {
@@ -19,16 +21,17 @@ const Header = () => {
             },
         });
         console.log(response.data); // Log the response
-        setUsername(response.data.username);
-        setIsLoggedIn(true); // Set user logged in state
+        // setUsername(response.data.username);
+        // setIsLoggedIn(true); // Set user logged in state
     } catch (error) {
         console.error('Error fetching username:', error);
-        setIsLoggedIn(false); // Set user logged out state if there is an error
+        // setIsLoggedIn(false); // Set user logged out state if there is an error
     }
 };
 
   useEffect(() => {
-    getUsername();
+    // getUsername();
+
     const handleScroll = () => {
       setHasScrolled(window.scrollY > 32);
     };
@@ -56,19 +59,21 @@ const Header = () => {
     );
   };
 
-  const handleTryNowClick = () => {
+  const handleTryNowClick =  async () => {
     if (isLoggedIn) {
       // Redirect to the upload page if the user is logged in
+      await logout()
       navigate("/");
     } else {
       // Redirect to the signup page if the user is not logged in
-      navigate("/");
+      navigate("/signup");
     }
   };
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setUsername("");
+  const handleLogout = async () => {
+    // setIsLoggedIn(false);
+    // setUsername("");
+    await logout()
     // Additional logout logic (e.g., clearing tokens)
   };
 
@@ -130,7 +135,7 @@ const Header = () => {
                     onClick={handleTryNowClick}
                     className="base-bold text-p4 uppercase transition-colors duration-500 cursor-pointer hover:text-p1 max-lg:my-4 max-lg:h5"
                   >
-                    {isLoggedIn ? `Logout, ${username}` : "CONTACT"}  
+                    {isLoggedIn ? `Logout, ${user}` : "Sign up"}  
                   </button>
                 </li>
               </ul>

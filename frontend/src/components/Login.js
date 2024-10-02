@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+// import login from './AuthContext'
+import AuthContext from './AuthContext';
 
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const {login} = useContext(AuthContext)
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -19,6 +22,7 @@ const Login = () => {
             // Store access and refresh tokens in local storage
             localStorage.setItem('access_token', response.data.access);
             localStorage.setItem('refresh_token', response.data.refresh);
+            await login(username,password)
             navigate('/'); // Redirect to home page after successful login
         } catch (err) {
             // Set error message if login fails

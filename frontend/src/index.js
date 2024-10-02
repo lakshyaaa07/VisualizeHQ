@@ -15,9 +15,11 @@ import TableauViz from './components/TableauViz';
 import DisplayInsights from './components/DisplayInsights';
 import Dashboard from './components/Dashboard'; // Import Dashboard
 import TableauDashboards from './components/TableauDashboard';
+import { AuthProvider } from './components/AuthContext'; // Import your AuthProvider
 
 function Index() {
   return (
+    <AuthProvider>
     <BrowserRouter>
       <Routes>
         <Route exact path="/upload" element={<UploadFile />} />
@@ -33,6 +35,7 @@ function Index() {
         <Route path="/dashboard" element={<Dashboard />} /> {/* New route for Dashboard */}
       </Routes>
     </BrowserRouter>
+    </AuthProvider>
   );
 }
 
