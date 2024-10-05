@@ -13,12 +13,13 @@ import Login from './components/Login';
 import Logout from './components/Logout';
 import TableauViz from './components/TableauViz';
 import DisplayInsights from './components/DisplayInsights';
-import Dashboard from './components/Dashboard';
+import Dashboard from './components/Dashboard'; // Import Dashboard
 import TableauDashboards from './components/TableauDashboard';
-import NotFound from "./sections/NotFound.js"; // Import NotFound
+import { AuthProvider } from './components/AuthContext'; // Import your AuthProvider
 
 function Index() {
   return (
+    <AuthProvider>
     <BrowserRouter>
       <Routes>
         <Route exact path="/upload" element={<UploadFile />} />
@@ -30,11 +31,11 @@ function Index() {
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/tableau-viz" element={<TableauViz />} />
-        <Route path="/tableau-dashboards" element={<TableauDashboards />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path="/tableau-dashboards" element={<TableauDashboards/>} />
+        <Route path="/dashboard" element={<Dashboard />} /> {/* New route for Dashboard */}
       </Routes>
     </BrowserRouter>
+    </AuthProvider>
   );
 }
 

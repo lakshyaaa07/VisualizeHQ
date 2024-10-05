@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"; // Change here
 import Header from "./sections/Header.js";
 import Hero from "./sections/Hero.js";
@@ -9,10 +9,13 @@ import Testimonials from "./sections/Testimonials.js";
 import Download from "./sections/Download.js";
 import Contact from "./sections/Contact.js";
 import Footer from "./sections/Footer.js";
+import NotFound from "./sections/NotFound.js";
 import HypnoticLoader from "./components/HypnoticLoader.js";
+import AuthContext, { AuthProvider } from "./components/AuthContext.js";
 
 const App = () => {
   const [loading, setLoading] = useState(true);
+  // const {username} =useContext(AuthContext)
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -29,17 +32,19 @@ const App = () => {
           loadingText="Welcome to Vizora, where your data comes to life!" 
           />
         ) : (
+          <AuthProvider>
           <>
-            <Header />
+
+             <Header />
             <Hero />
             <Features />
             <Pricing />
             <Faq />
             <Testimonials />
             <Download />
-            <Contact/>
             <Footer />
           </>
+          </AuthProvider>
         )}
       </main>
   );
