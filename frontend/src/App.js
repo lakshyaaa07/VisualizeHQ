@@ -9,7 +9,6 @@ import Testimonials from "./sections/Testimonials.js";
 import Download from "./sections/Download.js";
 import Contact from "./sections/Contact.js";
 import Footer from "./sections/Footer.js";
-import NotFound from "./sections/NotFound.js";
 import HypnoticLoader from "./components/HypnoticLoader.js";
 
 const App = () => {
@@ -31,13 +30,14 @@ const App = () => {
           />
         ) : (
           <>
-             <Header />
+            <Header />
             <Hero />
             <Features />
             <Pricing />
             <Faq />
             <Testimonials />
             <Download />
+            <Contact/>
             <Footer />
           </>
         )}

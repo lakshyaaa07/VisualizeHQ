@@ -13,8 +13,9 @@ import Login from './components/Login';
 import Logout from './components/Logout';
 import TableauViz from './components/TableauViz';
 import DisplayInsights from './components/DisplayInsights';
-import Dashboard from './components/Dashboard'; // Import Dashboard
+import Dashboard from './components/Dashboard';
 import TableauDashboards from './components/TableauDashboard';
+import NotFound from "./sections/NotFound.js"; // Import NotFound
 
 function Index() {
   return (
@@ -29,8 +30,9 @@ function Index() {
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/tableau-viz" element={<TableauViz />} />
-        <Route path="/tableau-dashboards" element={<TableauDashboards/>} />
-        <Route path="/dashboard" element={<Dashboard />} /> {/* New route for Dashboard */}
+        <Route path="/tableau-dashboards" element={<TableauDashboards />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
