@@ -16,6 +16,7 @@ import DisplayInsights from './components/DisplayInsights';
 import Dashboard from './components/Dashboard'; // Import Dashboard
 import TableauDashboards from './components/TableauDashboard';
 import { AuthProvider } from './components/AuthContext'; // Import your AuthProvider
+import Faq from './sections/Faq'
 
 function Index() {
   return (
@@ -33,6 +34,8 @@ function Index() {
         <Route path="/tableau-viz" element={<TableauViz />} />
         <Route path="/tableau-dashboards" element={<TableauDashboards/>} />
         <Route path="/dashboard" element={<Dashboard />} /> {/* New route for Dashboard */}
+        <Route path="/Faq" element={<Faq />} />
+
       </Routes>
     </BrowserRouter>
     </AuthProvider>

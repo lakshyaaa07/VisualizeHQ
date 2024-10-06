@@ -458,17 +458,17 @@ function UploadFile() {
         }
     };
 
-    const logout = async () => {
-        try {
-            await axios.post(api + '/logout/', { refresh: tokens.refresh });
-            setTokens(null);
-            setUser(null);
-            localStorage.removeItem('tokens');
-            setIsLoggedIn(false);
-        } catch (error) {
-            console.error('Logout failed:', error);
-        }
-    };
+    // const logout = async () => {
+    //     try {
+    //         await axios.post(api + '/logout/', { refresh: tokens.refresh });
+    //         setTokens(null);
+    //         setUser(null);
+    //         localStorage.removeItem('tokens');
+    //         setIsLoggedIn(false);
+    //     } catch (error) {
+    //         console.error('Logout failed:', error);
+    //     }
+    // };
     const deleteFile = (fileId) => {
         axios.delete(`${api}/files/${fileId}/`)
             .then(() => {
@@ -543,10 +543,11 @@ function UploadFile() {
                             </button>
                         </>
                     ) : (
-
+                       
                         navigate('/upload')
                     )}
                 </div>
+
                 {/* Remaining code for file upload, display, and analysis */}
             </div>
             {isLoggedIn && (

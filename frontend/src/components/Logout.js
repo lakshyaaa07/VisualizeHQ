@@ -4,7 +4,7 @@ const Logout = () => {
 
     const handleLogout = () => {
         localStorage.removeItem('tokens');
-        navigate('/upload');  // Redirect to login page
+        navigate('/');  // Redirect to login page
     };
     const handleCancel=()=>{
         navigate('/upload')
