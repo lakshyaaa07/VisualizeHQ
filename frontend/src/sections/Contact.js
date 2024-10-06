@@ -23,6 +23,7 @@ const Contact = () => {
             title: "Join our community",
             desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
             link: {
+                
                 name: "Join our Discord",
                 href: "javascript:void(0)",
             },
